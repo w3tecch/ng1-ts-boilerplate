@@ -1,0 +1,32 @@
+{
+  "name": "ngOneTsWebpack",
+  "private": true,
+  "version": "0.0.0",
+  "description": "A starter project for AngularJS",
+  "repository": "https://github.com/hirsch/ngOneTsWebpack",
+  "license": "MIT",
+  "devDependencies": {
+    "css-loader": "^0.23.1",
+    "json-loader": "^0.5.4",
+    "node-sass": "^3.4.2",
+    "raw-loader": "^0.5.1",
+    "sass-loader": "^3.1.2",
+    "style-loader": "^0.13.0",
+    "ts-loader": "^0.8.0",
+    "typescript": "^1.7.5",
+    "webpack": "^1.12.12"
+  },
+  "scripts": {
+    "start": "npm run server:dev",
+    "server": "npm run server:dev",
+    "server:dev": "webpack-dev-server --progress --profile --colors --display-error-details --display-cached  --content-base src/",
+    "server:prod": "http-server dist --cors",
+    "build": "npm run build:dev",
+    "build:dev": "webpack --progress --profile --colors --display-error-details --display-cached",
+    "build:prod": "webpack --config webpack.prod.config.js --progress --profile --colors --display-error-details --display-cached"
+  },
+  "dependencies": {
+    "angular": "^1.4.9",
+    "bootstrap": "^3.3.6"
+  }
+}
