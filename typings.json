@@ -1,5 +1,6 @@
 {
-  "dependencies": {
-    "moment": "github:typings/typed-moment#a4075cd50e63efbedd850f654594f293ab81a385"
+  "ambientDependencies": {
+    "angular": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular.d.ts",
+    "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts"
   }
 }

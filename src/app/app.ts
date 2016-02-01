@@ -2,8 +2,15 @@ import '../assets/scss/main.scss';
 
 import 'angular';
 
-angular
-  .module('app', [])
-  .run(() => {
-    console.info('Angular is ready!');
-  });
+declare var VERSION: string;
+declare var BUBU: boolean;
+
+module app {
+
+  angular
+    .module('app', [])
+    .run(() => {
+      console.info('Angular is ready!', VERSION, BUBU);
+    });
+
+}

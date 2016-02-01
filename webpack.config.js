@@ -14,6 +14,11 @@ var metadata = {
   ENV: ENV
 };
 
+var definePluginConfig = new webpack.DefinePlugin({
+  VERSION: JSON.stringify(getPkg().version),
+  BUBU: true
+});
+
 module.exports = {
 
   metadata: metadata,
@@ -29,6 +34,8 @@ module.exports = {
     filename: 'bundle.js',
     sourceMapFilename: 'bundle.map'
   },
+
+  plugins: [definePluginConfig],
 
   module: {
 
@@ -92,4 +99,8 @@ module.exports = {
 function root(args) {
   args = Array.prototype.slice.call(arguments, 0);
   return path.join.apply(path, [__dirname].concat(args));
+}
+
+function getPkg() {
+  return require(path.join(process.cwd(), 'package.json'));
 }
