@@ -39,6 +39,13 @@ module.exports = {
 
   module: {
 
+    preLoaders: [
+      {
+        test: /\.ts$/,
+        loader: 'tslint'
+      }
+    ],
+
     loaders: [
       //Support for .ts files.
       {
@@ -76,6 +83,13 @@ module.exports = {
 
     ]
 
+  },
+
+  // Other module loader config
+  tslint: {
+    emitErrors: false,
+    failOnHint: false,
+    resourcePath: 'src'
   },
 
   postcss: function () {
