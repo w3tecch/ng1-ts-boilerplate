@@ -1,9 +1,10 @@
 var path = require('path');
 var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
-var precss       = require('precss');
+var precss = require('precss');
 
-var ENV = process.env.ENV = process.env.NODE_ENV = 'development';
+var ENV = process.env.ENV = process.env.NODE_ENV = 'dev';
+//var ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 
 var metadata = {
   title: 'ngOneTsWebpack',
@@ -20,7 +21,7 @@ module.exports = {
   devtool: 'source-map',
   debug: true,
 
-  entry: "./src/app/app.ts",
+  entry: ['./src/app/app.ts'],
 
   // Config for our build files
   output: {
@@ -72,7 +73,7 @@ module.exports = {
 
   postcss: function () {
     return [
-      autoprefixer({ browsers: ['last 2 versions'] }), precss
+      autoprefixer({browsers: ['last 2 versions']}), precss
     ];
   },
 
