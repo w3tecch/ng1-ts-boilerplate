@@ -14,6 +14,14 @@ var metadata = {
   ENV: ENV
 };
 
+var banner = '/**\n' +
+  ' * @name           ' + getPkg().name + '\n' +
+  ' * @description    ' + getPkg().description + '\n\n' +
+  ' * @version        ' + getPkg().version + '\n' +
+  ' * @author         ' + getPkg().author + '\n' +
+  ' * @license        ' + getPkg().license + '\n' +
+  ' */\n';
+
 var definePluginConfig = new webpack.DefinePlugin({
   VERSION: JSON.stringify(getPkg().version),
   BUBU: true
@@ -35,7 +43,20 @@ module.exports = {
     sourceMapFilename: 'bundle.map'
   },
 
-  plugins: [definePluginConfig],
+  plugins: [
+    definePluginConfig,
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
+    new webpack.BannerPlugin(
+      banner,
+      {
+        raw: true,
+        entryOnly: false
+      })
+  ],
 
   module: {
 
