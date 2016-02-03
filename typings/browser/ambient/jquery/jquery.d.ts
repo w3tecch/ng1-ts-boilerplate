@@ -1,5 +1,5 @@
-// Compiled using typings@0.6.4
-// Source: https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/jquery/jquery.d.ts
+// Compiled using typings@0.6.5
+// Source: https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/cf2a968f0edd7d30773f7d23fe3708fa029d5ab7/jquery/jquery.d.ts
 // Type definitions for jQuery 1.10.x / 2.0.x
 // Project: http://jquery.com/
 // Definitions by: Boris Yankov <https://github.com/borisyankov/>, Christian Hoffmeister <https://github.com/choffmeister>, Steve Fenton <https://github.com/Steve-Fenton>, Diullei Gomes <https://github.com/Diullei>, Tass Iliopoulos <https://github.com/tasoili>, Jason Swearingen <https://github.com/jasons-novaleaf>, Sean Hill <https://github.com/seanski>, Guus Goossens <https://github.com/Guuz>, Kelly Summerlin <https://github.com/ksummerlin>, Basarat Ali Syed <https://github.com/basarat>, Nicholas Wolverson <https://github.com/nwolverson>, Derek Cicerone <https://github.com/derekcicerone>, Andrew Gaspar <https://github.com/AndrewGaspar>, James Harrison Fisher <https://github.com/jameshfisher>, Seikichi Kondo <https://github.com/seikichi>, Benjamin Jackman <https://github.com/benjaminjackman>, Poul Sorensen <https://github.com/s093294>, Josh Strobl <https://github.com/JoshStrobl>, John Reilly <https://github.com/johnnyreilly/>, Dick van den Brink <https://github.com/DickvdBrink>
@@ -3198,8 +3198,14 @@ interface JQuery {
      */
     queue(queueName: string, callback: Function): JQuery;
 }
+//declare module "jquery" {
+//    export = $;
+//}
+//declare var jQuery: JQueryStatic;
+//declare var $: JQueryStatic;
+
 declare module "jquery" {
-    export = $;
+  export var $:JQueryStatic;
 }
-declare var jQuery: JQueryStatic;
-declare var $: JQueryStatic;
+//declare var jQuery: JQueryStatic;
+//declare var $: JQueryStatic;

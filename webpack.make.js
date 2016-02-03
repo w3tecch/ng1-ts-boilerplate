@@ -32,9 +32,13 @@ module.exports = function makeWebpackConfig(options) {
    * Should be an empty object if it's generating a test build
    * Karma will set this when it's a test build
    */
-  config.entry = {
-    app: './src/app/app.ts'
-  };
+  if (TEST) {
+    config.entry = {}
+  } else {
+    config.entry = {
+      app: './src/app/app.ts'
+    };
+  }
 
   /**
    * Output
@@ -99,11 +103,11 @@ module.exports = function makeWebpackConfig(options) {
     ],
     loaders: [
       //Support for .ts files.
-      {
-        test: /\.ts$/,
-        loader: 'ts-loader',
-        exclude: [/\.(spec|e2e|async)\.ts$/]
-      },
+      //{
+      //  test: /\.ts$/,
+      //  loader: 'ts-loader'
+      //  //exclude: [/\.(spec|e2e|async)\.ts$/]
+      //},
       // Support for *.json files.
       {
         test: /\.json$/,
@@ -136,6 +140,35 @@ module.exports = function makeWebpackConfig(options) {
     ]
   };
 
+  // ISPARTA LOADER
+  // Reference: https://github.com/ColCh/isparta-instrumenter-loader
+  // Instrument JS files with Isparta for subsequent code coverage reporting
+  // Skips node_modules and files that end with .test.js
+  if (TEST) {
+    //config.module.preLoaders.push({
+    //  test: /\.ts$/,
+    //  exclude: [
+    //    /node_modules/,
+    //    /\.spec\.ts$/
+    //  ],
+    //  loader: 'isparta-instrumenter'
+    //});
+    config.module.loaders.push(
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader'
+      }
+    );
+  } else {
+    config.module.loaders.push(
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+        exclude: [/\.(spec|e2e|async)\.ts$/]
+      }
+    );
+  }
+
   /**
    * PostCSS
    * Reference: https://github.com/postcss/autoprefixer-core
@@ -148,6 +181,13 @@ module.exports = function makeWebpackConfig(options) {
       })
     ];
   }
+
+  //// Skip loading css in test mode
+  //if (TEST) {
+  //  // Reference: https://github.com/webpack/null-loader
+  //  // Return an empty module
+  //  cssLoader.loader = 'null'
+  //}
 
   /**
    * TSLINT
