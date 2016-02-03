@@ -102,13 +102,6 @@ module.exports = function makeWebpackConfig(options) {
       }
     ],
     loaders: [
-      //Support for .ts files.
-      //{
-      //  test: /\.ts$/,
-      //  loader: 'ts-loader'
-      //  //exclude: [/\.(spec|e2e|async)\.ts$/]
-      //},
-      // Support for *.json files.
       {
         test: /\.json$/,
         loader: 'json-loader'
@@ -145,17 +138,17 @@ module.exports = function makeWebpackConfig(options) {
   // Instrument JS files with Isparta for subsequent code coverage reporting
   // Skips node_modules and files that end with .test.js
   if (TEST) {
-    //config.module.preLoaders.push({
-    //  test: /\.ts$/,
-    //  exclude: [
-    //    /node_modules/,
-    //    /\.spec\.ts$/
-    //  ],
-    //  loader: 'isparta-instrumenter'
-    //});
+    config.module.preLoaders.push({
+      test: /\.ts$/,
+      exclude: [
+        /node_modules/,
+        /\.spec\.ts$/
+      ],
+      loader: 'isparta-instrumenter'
+    });
     config.module.loaders.push(
       {
-        test: /\.ts$/,
+        test: /\.spec.ts$/,
         loader: 'ts-loader'
       }
     );
@@ -181,13 +174,6 @@ module.exports = function makeWebpackConfig(options) {
       })
     ];
   }
-
-  //// Skip loading css in test mode
-  //if (TEST) {
-  //  // Reference: https://github.com/webpack/null-loader
-  //  // Return an empty module
-  //  cssLoader.loader = 'null'
-  //}
 
   /**
    * TSLINT

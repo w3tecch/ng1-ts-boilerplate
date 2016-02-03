@@ -8,6 +8,7 @@
   "license": "MIT",
   "devDependencies": {
     "bootstrap-sass": "^3.3.6",
+    "chai": "^3.5.0",
     "command-line-args": "^2.1.4",
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
@@ -16,6 +17,7 @@
     "jasmine-core": "^2.3.4",
     "json-loader": "^0.5.4",
     "karma": "^0.13.19",
+    "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.2.2",
     "karma-coverage": "^0.5.3",
     "karma-jasmine": "^0.3.6",
