@@ -73,15 +73,15 @@ module.exports = function makeWebpackConfig(options) {
    * Reference: http://webpack.github.io/docs/configuration.html#devtool
    * Type of sourcemap to use per build type
    */
-  //if (TEST) {
-  //  config.devtool = 'inline-source-map';
-  //} else if (BUILD) {
-  config.debug = true;
-  //  config.devtool = 'source-map';
-  //} else {
-  //config.debug = true;
-  //  config.devtool = 'source-map';
-  //}
+  if (TEST) {
+    config.devtool = 'inline-source-map';
+  } else if (BUILD) {
+    config.debug = true;
+    config.devtool = 'source-map';
+  } else {
+    config.debug = true;
+    config.devtool = 'eval';
+  }
 
   /**
    * Loaders
@@ -116,11 +116,11 @@ module.exports = function makeWebpackConfig(options) {
         test: /\.html$/,
         loader: 'raw-loader'
       },
-      //
+      // SASS LOADER
+      // Reference: https://github.com/jtangelder/sass-loader
+      // Allows compiling sass into css
       {
         test: /\.scss$/,
-        //loader: 'style!css!postcss!sass'
-        //loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader')
         loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!sass')
       },
       // ASSET LOADER
