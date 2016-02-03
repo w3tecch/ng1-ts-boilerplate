@@ -2,15 +2,12 @@ import '../assets/scss/main.scss';
 
 import 'angular';
 
-declare var VERSION: string;
-declare var BUBU: boolean;
+import {AppConfig} from './app.config.ts';
 
-module app {
 
-  angular
-    .module('app', [])
-    .run(() => {
-      console.info('Angular is ready!', VERSION, BUBU);
-    });
+angular
+  .module('app', [])
+  .run(() => {
+    console.info('Angular is ready!', AppConfig);
+  });
 
-}
