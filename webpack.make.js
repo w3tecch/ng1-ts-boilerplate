@@ -141,11 +141,13 @@ module.exports = function makeWebpackConfig(options) {
    * Reference: https://github.com/postcss/autoprefixer-core
    * Add vendor prefixes to your css
    */
-  config.postcss = [
-    autoprefixer({
-      browsers: ['last 2 version']
-    })
-  ];
+  if (!TEST) {
+    config.postcss = [
+      autoprefixer({
+        browsers: ['last 2 version']
+      })
+    ];
+  }
 
   /**
    * TSLINT
@@ -176,6 +178,10 @@ module.exports = function makeWebpackConfig(options) {
       disable: !BUILD || TEST
     }
   ));
+
+  if (BUILD) {
+    config.plugins.push(new webpack.BannerPlugin(helpers.getBanner()));
+  }
 
   // Skip rendering index.html in test mode
   if (!TEST) {
