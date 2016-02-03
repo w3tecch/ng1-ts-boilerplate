@@ -2,6 +2,8 @@
 
 var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var precss = require('precss');
 var yargs = require('yargs').argv;
 
@@ -30,7 +32,9 @@ module.exports = function makeWebpackConfig(options) {
    * Should be an empty object if it's generating a test build
    * Karma will set this when it's a test build
    */
-  config.entry = ['./src/app/app.ts'];
+  config.entry = {
+    app: './src/app/app.ts'
+  };
 
   /**
    * Output
@@ -41,10 +45,9 @@ module.exports = function makeWebpackConfig(options) {
   if (TEST) {
     config.output = {}
   } else {
-    config.debug = true;
     config.output = {
       path: helpers.root('dist'),
-      filename: 'bundle.js',
+      filename: BUILD ? '[name].[hash].js' : '[name].bundle.js',
       sourceMapFilename: 'bundle.map'
     };
     //config.output = {
@@ -70,13 +73,15 @@ module.exports = function makeWebpackConfig(options) {
    * Reference: http://webpack.github.io/docs/configuration.html#devtool
    * Type of sourcemap to use per build type
    */
-  if (TEST) {
-    config.devtool = 'inline-source-map';
-  } else if (BUILD) {
-    config.devtool = 'source-map';
-  } else {
-    config.devtool = 'eval';
-  }
+  //if (TEST) {
+  //  config.devtool = 'inline-source-map';
+  //} else if (BUILD) {
+  config.debug = true;
+  //  config.devtool = 'source-map';
+  //} else {
+  //config.debug = true;
+  //  config.devtool = 'source-map';
+  //}
 
   /**
    * Loaders
@@ -114,7 +119,9 @@ module.exports = function makeWebpackConfig(options) {
       //
       {
         test: /\.scss$/,
-        loader: 'style!css!postcss!sass!'
+        //loader: 'style!css!postcss!sass'
+        //loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader')
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!sass')
       },
       // ASSET LOADER
       // Reference: https://github.com/webpack/file-loader
@@ -160,6 +167,27 @@ module.exports = function makeWebpackConfig(options) {
   // Reference: http://webpack.github.io/docs/list-of-plugins.html#defineplugin
   // Adds the app config to the app
   config.plugins.push(new webpack.DefinePlugin(appConfig));
+
+  // Reference: https://github.com/webpack/extract-text-webpack-plugin
+  // Extract css files
+  // Disabled when in test mode or not in build mode
+  config.plugins.push(new ExtractTextPlugin(
+    '[name].[hash].css', {
+      disable: !BUILD || TEST
+    }
+  ));
+
+  // Skip rendering index.html in test mode
+  if (!TEST) {
+    // Reference: https://github.com/ampedandwired/html-webpack-plugin
+    // Render index.html
+    config.plugins.push(
+      new HtmlWebpackPlugin({
+        template: './src/index.html',
+        inject: 'body'
+      })
+    )
+  }
 
   // Add build specific plugins
   if (BUILD) {
