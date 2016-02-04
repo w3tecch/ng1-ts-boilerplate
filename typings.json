@@ -11,6 +11,8 @@
     "lodash": "github:DefinitelyTyped/DefinitelyTyped/lodash/lodash.d.ts#e69fe60f2d6377ea4fae539493997b098f52cad1",
     "moment": "github:DefinitelyTyped/DefinitelyTyped/moment/moment.d.ts#7d3a939fbe55576fad2e074d007f7cc671aa0e78",
     "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#8cf8164641be73e8f1e652c2a5b967c7210b6729",
+    "rx.all": "https://raw.githubusercontent.com/Reactive-Extensions/RxJS/master/ts/rx.all.d.ts",
+    "rx.angular": "https://raw.githubusercontent.com/Reactive-Extensions/rx.angular.js/master/ts/rx.angular.d.ts",
     "selenium-webdriver": "github:DefinitelyTyped/DefinitelyTyped/selenium-webdriver/selenium-webdriver.d.ts#a83677ed13add14c2ab06c7325d182d0ba2784ea",
     "webpack": "github:DefinitelyTyped/DefinitelyTyped/webpack/webpack.d.ts#95c02169ba8fa58ac1092422efbd2e3174a206f4"
   },

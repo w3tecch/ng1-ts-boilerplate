@@ -7,6 +7,7 @@ import '../assets/scss/main.scss';
  */
 import 'angular';
 import 'angular-ui-router';
+import 'rx-angular';
 /**
  * Import app modules
  */
@@ -20,6 +21,7 @@ angular
     // AngularJS Libs
 
     // Third-Party Libs
+    'rx',
     'ui.router',
 
     // Configs, middleware, run...
