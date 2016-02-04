@@ -10,7 +10,7 @@ import 'angular-ui-router';
 /**
  * Import app modules
  */
-import {AppConfig} from './app.config.ts';
+import {AppConfig, RouterConfig} from './app.config.ts';
 import home from './modules/home/home.module.ts';
 /**
  * Define your app
@@ -29,7 +29,7 @@ angular
     // App modules
     home
   ])
+  .config(RouterConfig)
   .run(() => {
     console.info('Angular is ready!', AppConfig);
   });
-

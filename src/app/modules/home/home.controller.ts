@@ -4,6 +4,7 @@ export default class HomeController {
 
   constructor() {
     this.name = 'World';
+    console.info('HomeController');
   }
 
   public changeName() {

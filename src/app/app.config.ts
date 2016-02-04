@@ -1,3 +1,6 @@
+/**
+ * Environment Config
+ */
 declare var ENV: string;
 declare var NAME: string;
 declare var VERSION: string;
@@ -17,3 +20,12 @@ export const AppConfig: IAppConfig = {
   API_URL: API_URL,
 };
 
+/**
+ * Angular Router Config
+ */
+export var RouterConfig = ($urlRouterProvider) => {
+  console.info('RouterConfig');
+  $urlRouterProvider.otherwise('/');
+};
+
+RouterConfig.$inject = ['$urlRouterProvider'];
