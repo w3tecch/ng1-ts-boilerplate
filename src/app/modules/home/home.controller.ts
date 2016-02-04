@@ -9,7 +9,7 @@ export default class HomeController {
   public newValue: string;
   public oldValue: string;
 
-  constructor($scope, observeOnScope: any) {
+  constructor($scope, observeOnScope) {
     console.info('HomeController');
     this.name = 'World';
 

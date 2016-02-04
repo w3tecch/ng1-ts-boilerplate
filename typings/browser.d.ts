@@ -11,6 +11,7 @@
 /// <reference path="browser/ambient/node/node.d.ts" />
 /// <reference path="browser/ambient/rx.all/rx.all.d.ts" />
 /// <reference path="browser/ambient/rx.angular/rx.angular.d.ts" />
+/// <reference path="browser/ambient/rx/rx.d.ts" />
 /// <reference path="browser/ambient/selenium-webdriver/selenium-webdriver.d.ts" />
 /// <reference path="browser/ambient/webpack/webpack.d.ts" />
 /// <reference path="browser/definitions/es6-promise/es6-promise.d.ts" />
