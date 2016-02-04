@@ -4,6 +4,6 @@ describe('App', () => {
   });
 
   it('my second test', () => {
-    expect('bubu').toBe('test');
+    expect('bubu').toBe('bubu');
   });
 });

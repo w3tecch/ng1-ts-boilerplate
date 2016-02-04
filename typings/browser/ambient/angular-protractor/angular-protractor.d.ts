@@ -1,4 +1,4 @@
-// Compiled using typings@0.6.5
+// Compiled using typings@0.6.6
 // Source: https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/64b25f63f0ec821040a5d3e049a976865062ed9d/angular-protractor/angular-protractor.d.ts
 // Type definitions for Angular Protractor 1.5.0
 // Project: https://github.com/angular/protractor

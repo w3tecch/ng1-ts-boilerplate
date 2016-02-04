@@ -1,4 +1,4 @@
-// Compiled using typings@0.6.5
+// Compiled using typings@0.6.6
 // Source: https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/95c02169ba8fa58ac1092422efbd2e3174a206f4/webpack/webpack.d.ts
 // Type definitions for webpack 1.12.2
 // Project: https://github.com/webpack/webpack
