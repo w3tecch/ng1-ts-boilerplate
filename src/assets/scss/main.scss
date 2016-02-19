@@ -1,8 +1,14 @@
+/**
+ * LIBS
+ */
 @import "bootstrap";
 
-h1{
-  color: blue;
-  user-select: none;
-  transform: none;
-}
+/**
+ * MODULES
+ */
+@import "./../../app/modules/home/home.style";
 
+/**
+ * COMMONS
+ */
+@import "base";
