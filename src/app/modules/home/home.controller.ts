@@ -1,17 +1,15 @@
-import AppServicesModule from './../../services/services.module.ts';
-import {Logger, LoggerService} from './../../services/logger.service';
+import Logger from './../../services/logger.service.ts';
 
 export default class HomeController {
-  static $inject = [
-    AppServicesModule.IID.LoggerService
-  ];
+  static $inject = [];
 
   public name: string;
   private _logger: Logger;
 
-  constructor(_loggerService: LoggerService) {
-    this._logger = _loggerService.create('app.services.HomeController');
-    this._logger.info('constructor');
+  constructor() {
+    this._logger = new Logger('app.services.HomeController');
+    this._logger.info('constructor', Logger.DEBUG);
   }
 
 }
+

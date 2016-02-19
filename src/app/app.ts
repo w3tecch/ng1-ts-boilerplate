@@ -8,7 +8,7 @@ import '../assets/scss/main.scss';
 import 'angular';
 import 'angular-ui-router';
 import 'rx-angular';
-import 'moment/moment.js';
+
 /**
  * Import app modules
  */
