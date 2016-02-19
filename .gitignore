@@ -4,6 +4,8 @@ node_modules/
 bower_components/
 dist/
 build/
+docs/
+out/
 coverage/
 tmp
 .DS_Store

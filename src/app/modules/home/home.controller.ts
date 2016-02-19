@@ -1,25 +1,17 @@
+import AppServicesModule from './../../services/services.module.ts';
+import {Logger, LoggerService} from './../../services/logger.service';
+
 export default class HomeController {
   static $inject = [
-    '$scope',
-    'observeOnScope'
+    AppServicesModule.IID.LoggerService
   ];
 
   public name: string;
-  public observedChange: string;
-  public newValue: string;
-  public oldValue: string;
+  private _logger: Logger;
 
-  constructor($scope, observeOnScope) {
-    console.info('HomeController');
-    this.name = 'World';
-
-    // Listen for changes on the name
-    observeOnScope($scope, 'name').subscribe((change) => {
-      this.observedChange = change;
-      this.newValue = change.newValue;
-      this.oldValue = change.oldValue;
-    });
-
+  constructor(_loggerService: LoggerService) {
+    this._logger = _loggerService.create('app.services.HomeController');
+    this._logger.info('constructor');
   }
 
 }

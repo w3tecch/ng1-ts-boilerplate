@@ -8,10 +8,12 @@ import '../assets/scss/main.scss';
 import 'angular';
 import 'angular-ui-router';
 import 'rx-angular';
+import 'moment/moment.js';
 /**
  * Import app modules
  */
 import {AppConfig, RouterConfig} from './app.config.ts';
+import AppServices from './services/services.module.ts';
 import home from './modules/home/home.module.ts';
 /**
  * Define your app
@@ -27,6 +29,7 @@ angular
     // Configs, middleware, run...
 
     // Common components, services, filters, models...
+    AppServices.class,
 
     // App modules
     home
@@ -35,3 +38,4 @@ angular
   .run(() => {
     console.info('Angular is ready!', AppConfig);
   });
+
