@@ -10,7 +10,7 @@ module.exports = function karmaConfig (config) {
     frameworks: [
       // Reference: https://github.com/karma-runner/karma-jasmine
       // Set framework to jasmine
-      'jasmine', 'chai'
+      'mocha', 'chai'
     ],
 
     // list of files to exclude

@@ -11,5 +11,8 @@ export default class HomeController {
     this._logger.info('constructor', Logger.DEBUG);
   }
 
-}
+  public sayHello(){
+    return 'Hello';
+  }
 
+}
