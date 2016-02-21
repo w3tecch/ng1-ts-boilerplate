@@ -1,7 +1,7 @@
 import Logger from './../../services/logger.service.ts';
 
 export default class HomeController {
-  static $inject = [];
+  public static $inject = [];
 
   public name: string;
   private _logger: Logger;
@@ -11,7 +11,7 @@ export default class HomeController {
     this._logger.info('constructor', Logger.DEBUG);
   }
 
-  public sayHello(){
+  public sayHello(): string {
     return 'Hello';
   }
 
