@@ -8,7 +8,7 @@ export default class HomeController {
 
   constructor() {
     this._logger = new Logger('app.services.HomeController');
-    this._logger.info('constructor', Logger.DEBUG);
+    //this._logger.info(' constructor', Logger.DEBUG);
   }
 
   public sayHello(): string {
