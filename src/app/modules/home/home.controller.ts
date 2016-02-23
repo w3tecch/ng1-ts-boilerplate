@@ -1,4 +1,4 @@
-import Logger from './../../services/logger.service.ts';
+import Logger from './../../services/utils/logger.service.ts';
 
 export default class HomeController {
   public static $inject = [];
@@ -8,6 +8,8 @@ export default class HomeController {
 
   constructor() {
     this._logger = new Logger('app.services.HomeController');
+    this._logger.info('Test');
+    //this._logger = new Logger('app.services.HomeController');
     //this._logger.info(' constructor', Logger.DEBUG);
   }
 
