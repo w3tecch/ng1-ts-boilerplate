@@ -23,35 +23,35 @@ export default class Logger {
     this.info('Logger', this.className);
   }
 
-  public info(message: string, ...args) {
+  public info(message: string, ...args): void {
     if (this._isInfoEnabled) {
       this._log(Logger.INFO, message, ...args);
     }
   }
 
-  public debug(message: string, ...args) {
+  public debug(message: string, ...args): void {
     if (this._isDebugEnabled) {
       this._log(Logger.DEBUG, message, ...args);
     }
   }
 
-  public warn(message: string, ...args) {
+  public warn(message: string, ...args): void {
     if (this._isWarnEnabled) {
       this._log(Logger.WARN, message, ...args);
     }
   }
 
-  public error(message: string, ...args) {
+  public error(message: string, ...args): void {
     if (this._isErrorEnabled) {
       this._log(Logger.ERROR, message, ...args);
     }
   }
 
-  private _log(type: string, message: string, ...args) {
+  private _log(type: string, message: string, ...args): void {
     console[type](this.formatter(message), ...args);
   }
 
-  private formatter(message: string) {
+  private formatter(message: string): string {
     return `[${moment().format('YYYY-MM-DD HH:MM:SS:SSS')} - ${this.className}] ${message}:`;
   }
 

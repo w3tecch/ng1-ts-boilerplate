@@ -1,11 +1,11 @@
 //import {LoggerService} from './logger.service.ts';
 
 export default class AppServices {
-  static class = 'app.services';
-  static IID = {
+  public static class = 'app.services';
+  public static IID = {
     //LoggerService: `${AppServices.class}.LoggerService`
   };
-  static events = {};
+  public static events = {};
 }
 
 angular.module(AppServices.class, []);
