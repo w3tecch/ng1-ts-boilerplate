@@ -1,3 +1,4 @@
+import {AppConfig} from './../../app.config.ts';
 import moment = require('moment');
 
 export default class Logger {
@@ -7,13 +8,19 @@ export default class Logger {
   public static WARN: string = 'warn';
   public static ERROR: string = 'error';
 
-  private _isInfoEnabled: boolean = true;
-  private _isDebugEnabled: boolean = true;
-  private _isWarnEnabled: boolean = true;
-  private _isErrorEnabled: boolean = true;
+  private _isInfoEnabled: boolean = false;
+  private _isDebugEnabled: boolean = false;
+  private _isWarnEnabled: boolean = false;
+  private _isErrorEnabled: boolean = false;
 
   constructor(private className: string) {
-    console.info('Logger', this.className);
+    if (Array.isArray(AppConfig.LOGGER) && !AppConfig.LOGGER.isEmpty()) {
+      this._isInfoEnabled = AppConfig.LOGGER.indexOf(Logger.INFO) >= 0;
+      this._isDebugEnabled = AppConfig.LOGGER.indexOf(Logger.DEBUG) >= 0;
+      this._isWarnEnabled = AppConfig.LOGGER.indexOf(Logger.WARN) >= 0;
+      this._isErrorEnabled = AppConfig.LOGGER.indexOf(Logger.ERROR) >= 0;
+    }
+    this.info('Logger', this.className);
   }
 
   public info(message: string, ...args) {
