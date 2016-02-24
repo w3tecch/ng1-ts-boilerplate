@@ -144,7 +144,7 @@ module.exports = function makeWebpackConfig(options) {
         /node_modules/,
         /\.spec\.ts$/
       ],
-      loader: 'isparta-instrumenter-loader'
+      loader: 'ts-loader'
     });
     config.module.loaders.push(
       {
