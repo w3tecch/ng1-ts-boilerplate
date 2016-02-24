@@ -1,5 +1,5 @@
 import {AppConfig} from './../../app.config.ts';
-import moment = require('moment');
+import * as moment from 'moment'; // same as import moment = require('moment');
 
 export default class Logger {
 
@@ -13,13 +13,17 @@ export default class Logger {
   private _isWarnEnabled: boolean = false;
   private _isErrorEnabled: boolean = false;
 
-  constructor(private className: string) {
+  constructor(private _className: string) {
     if (Array.isArray(AppConfig.LOGGER) && AppConfig.LOGGER.length != 0) {
       this._isInfoEnabled = AppConfig.LOGGER.indexOf(Logger.INFO) >= 0;
       this._isDebugEnabled = AppConfig.LOGGER.indexOf(Logger.DEBUG) >= 0;
       this._isWarnEnabled = AppConfig.LOGGER.indexOf(Logger.WARN) >= 0;
       this._isErrorEnabled = AppConfig.LOGGER.indexOf(Logger.ERROR) >= 0;
     }
+  }
+
+  public get className(): string{
+    return this._className;
   }
 
   public info(message: string, ...args): void {
