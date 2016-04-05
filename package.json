@@ -23,7 +23,6 @@
     "angular-local-storage": "^0.2.2",
     "angular-sanitize": "^1.4.9",
     "angular-translate": "^2.9.0",
-    "angular-translate-loader-static-files": "^2.9.0",
     "bootstrap": "^3.3.6",
     "font-awesome": "^4.5.0",
     "lodash": "^4.2.1",

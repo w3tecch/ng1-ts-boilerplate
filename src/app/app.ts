@@ -7,19 +7,21 @@ import '../assets/scss/main.scss';
  */
 import 'angular';
 import '@angular/router/angular1/angular_1_router';
+import 'angular-translate';
 
 /**
  * Import app modules
  */
 import {AppConfig, RouterConfig} from './app.config.ts';
 import Services from './services/services.module.ts';
+import Config from './config/config.module.ts';
 import {default as home, homeRoute} from './modules/home/home.module.ts';
 
 /**
  * App
  */
 class App implements ng.IComponentOptions {
-  public template = '<ng-outlet></ng-outlet>';
+  public template = '<h1 translate="TITLE"></h1><ng-outlet></ng-outlet>';
   public $routeConfig = [
     {path: '/', name: 'Home', component: homeRoute, useAsDefault: true}
   ];
@@ -34,8 +36,10 @@ angular
     'ngComponentRouter',
 
     // Third-Party Libs
+    'pascalprecht.translate',
 
     // Configs, middleware, run...
+    Config,
 
     // Common components, services, filters, models...
     Services,
