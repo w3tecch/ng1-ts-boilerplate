@@ -1,13 +1,28 @@
+/**
+ * Import dependencies
+ */
 import Logger from './../../services/utils/logger.service.ts';
 import {mediatorService} from './../../services/utils/mediator.service.ts';
-import {momentService} from './../../services/utils/moment.service.ts';
 
+/**
+ * An example Controller
+ *
+ * @class HomeController
+ */
 class HomeController {
-  public static $inject = [];
-
   public name: string;
   private _logger: Logger;
 
+  /**
+   * static inject
+   *
+   * @static $inject
+   */
+  public static $inject = [];
+
+  /**
+   * Creates an instance of HomeController.
+   */
   constructor() {
 
     // Example logger
@@ -26,14 +41,13 @@ class HomeController {
     testChannelPublisher('gugus 1');
     testChannelPublisher('gugus 2');
 
-    //Example moment
-    let key = 'bubu';
-    let data = { bubu: true };
-    momentService.set(key)(data);
-    this._logger.info('moment:example')(momentService.get(key));
-
   }
 
+  /**
+   * An example method
+   *
+   * @returns {string} returns 'Hello'
+   */
   public sayHello(): string {
     return 'Hello';
   }

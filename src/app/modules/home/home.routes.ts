@@ -1,13 +1,12 @@
-let routing = ($stateProvider) => {
-  $stateProvider
-    .state('home', {
-      url: '/',
-      template: require('./home.view.html'),
-      controller: 'HomeController',
-      controllerAs: 'home'
-    });
-};
+/**
+ * An example route component
+ *
+ * @class HomeRoute
+ */
+class HomeRoute implements ng.IComponentOptions {
+  public template = require('./home.view.html');
 
-routing.$inject = ['$stateProvider'];
+  constructor(public controller) {}
+}
 
-export default routing;
+export default HomeRoute;

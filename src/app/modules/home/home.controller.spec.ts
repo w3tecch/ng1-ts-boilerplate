@@ -1,6 +1,12 @@
+/**
+ * Import dependencies
+ */
 import { expect } from 'chai';
 import HomeController from './home.controller.ts';
 
+/**
+ * Tests
+ */
 describe('app.home.HomeController', () => {
 
   let homeController: HomeController;

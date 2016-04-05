@@ -26,9 +26,8 @@ export const AppConfig: IAppConfig = {
 /**
  * Angular Router Config
  */
-export var RouterConfig = ($urlRouterProvider) => {
-  console.info('RouterConfig');
-  $urlRouterProvider.otherwise('/');
+export var RouterConfig = ($locationProvider) => {
+  $locationProvider.html5Mode(true);
 };
 
-RouterConfig.$inject = ['$urlRouterProvider'];
+RouterConfig.$inject = ['$locationProvider'];

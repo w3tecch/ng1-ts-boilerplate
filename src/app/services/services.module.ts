@@ -1,13 +1,27 @@
-//import {LoggerService} from './logger.service.ts';
+/**
+ * Import dependencies
+ */
+import LoggerService from './utils/logger.service.ts';
 
-export default class AppServices {
-  public static class = 'app.services';
-  public static IID = {
-    //LoggerService: `${AppServices.class}.LoggerService`
-  };
-  public static events = {};
-}
+/**
+ * Define namespace of module
+ *
+ * @type {string}
+ */
+const namespace = 'app.services';
 
-angular.module(AppServices.class, []);
-//.service(AppServices.IID.LoggerService, LoggerService);
+/**
+ * Export module components
+ *
+ * @type {string}
+ */
+export const loggerService = `${namespace}.LoggerService`;
 
+/**
+ * Define and export angular setup for this module
+ *
+ * @type {string} returns angular FQDN module name
+ */
+export default angular.module(namespace, [])
+  .service(loggerService, LoggerService)
+  .name;
