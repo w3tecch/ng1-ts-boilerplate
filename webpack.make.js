@@ -129,7 +129,7 @@ module.exports = function makeWebpackConfig(options) {
       // You can add here any file extension you want to get copied to your output
       {
         test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
-        loader: 'file'
+        loader: 'url-loader?limit=100000'
       }
     ]
   };
