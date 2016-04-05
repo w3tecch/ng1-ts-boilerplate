@@ -2,7 +2,7 @@ import Logger from './../../services/utils/logger.service.ts';
 import {mediatorService} from './../../services/utils/mediator.service.ts';
 import {momentService} from './../../services/utils/moment.service.ts';
 
-export default class HomeController {
+class HomeController {
   public static $inject = [];
 
   public name: string;
@@ -37,5 +37,6 @@ export default class HomeController {
   public sayHello(): string {
     return 'Hello';
   }
-
 }
+
+export default HomeController;
