@@ -14,7 +14,7 @@ export default class Logger {
   private _isErrorEnabled: boolean = false;
 
   constructor(private _className: string) {
-    if (Array.isArray(AppConfig.LOGGER) && AppConfig.LOGGER.length != 0) {
+    if (Array.isArray(AppConfig.LOGGER) && AppConfig.LOGGER.length !== 0) {
       this._isInfoEnabled = AppConfig.LOGGER.indexOf(Logger.INFO) >= 0;
       this._isDebugEnabled = AppConfig.LOGGER.indexOf(Logger.DEBUG) >= 0;
       this._isWarnEnabled = AppConfig.LOGGER.indexOf(Logger.WARN) >= 0;
