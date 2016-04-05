@@ -6,6 +6,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var precss = require('precss');
 var yargs = require('yargs').argv;
+var path = require('path');
 
 var helpers = require(process.cwd() + '/webpack.helpers.js');
 var appConfig = require(process.cwd() + '/app.config.js')(helpers.getEnv(), helpers.getPkg());
@@ -195,6 +196,15 @@ module.exports = function makeWebpackConfig(options) {
   // Reference: http://webpack.github.io/docs/list-of-plugins.html#defineplugin
   // Adds the app config to the app
   config.plugins.push(new webpack.DefinePlugin(appConfig));
+
+  // Automatically move all modules defined outside of application directory to vendor bundle.
+  // If you are using more complicated project structure, consider to specify common chunks manually.
+  config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    minChunks: function (module, count) {
+      return module.resource && module.resource.indexOf(path.resolve(__dirname, 'src')) === -1;
+    }
+  }));
 
   // Reference: https://github.com/webpack/extract-text-webpack-plugin
   // Extract css files
