@@ -9,14 +9,14 @@ import Logger from './logger.service.ts';
  */
 describe('app.services.utils.Logger', () => {
 
-  it('my second test', () => {
-    expect('bubu').to.equal('bubu');
-  });
+  let logger: Logger,
+      classname = 'test.logger';
+
+  beforeEach(() => logger = new Logger(classname));
+  beforeEach(() => sinon.stub(logger, 'debug'));
 
   it('logger saves the classname', () => {
-    let classname = 'test.logger';
-    let l = new Logger(classname);
-    expect(l.className).to.equal(classname);
+    expect(logger.className).to.equal(classname);
   });
 
 });
