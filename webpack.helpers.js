@@ -10,7 +10,7 @@ var webpackHelpers = {
 };
 
 function getEnv() {
-  return process.env.ENV = process.env.NODE_ENV = yargs.env || 'dev';
+  return process.env.ENV = process.env.NODE_ENV = (typeof yargs.env === 'string' ? yargs.env : 'dev');
 }
 
 function getPkg() {
