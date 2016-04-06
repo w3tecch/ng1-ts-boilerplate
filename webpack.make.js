@@ -139,17 +139,9 @@ module.exports = function makeWebpackConfig(options) {
   // Instrument JS files with Isparta for subsequent code coverage reporting
   // Skips node_modules and files that end with .spec.js
   if (TEST) {
-    config.module.preLoaders.push({
-      test: /\.ts$/,
-      exclude: [
-        /node_modules/,
-        /\.spec\.ts$/
-      ],
-      loader: 'ts-loader'
-    });
     config.module.loaders.push(
       {
-        test: /\.spec.ts$/,
+        test: /\.ts$/,
         loader: 'ts-loader'
       }
     );
