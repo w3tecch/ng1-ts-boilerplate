@@ -2,135 +2,179 @@
  * Import dependencies
  */
 import {AppConfig} from './../../app.config.ts';
-import * as moment from 'moment'; // same as import moment = require('moment');
+import * as moment from 'moment';
 
 /**
- * The logger serivce to log based on loglevels
+ * This interface exposes the available log mehtods
+ *
+ * @interface ILoggerMethods
+ */
+interface ILoggerMethods {
+  DEBUG: string;
+  INFO: string;
+  WARN: string;
+  ERROR: string;
+}
+
+/**
+ * This enum holds all valid log levels
+ *
+ * @export
+ * @enum {number}
+ */
+export enum ILoggerLevel {
+  DEBUG = 1,
+  INFO  = 2,
+  WARN  = 3,
+  ERROR = 4,
+  NONE  = 5
+}
+
+/**
+ * A cross browser logger service
  *
  * @class Logger
  */
 class Logger {
 
   /**
-   * LogLevel info
+   * An map with available log levels
    *
    * @static
-   * @type {string}
+   * @type {ILoggerMethods}
    */
-  public static INFO: string = 'info';
+  public static METHOD: ILoggerMethods = {
+    DEBUG: 'debug',
+    INFO: 'info',
+    WARN: 'warn',
+    ERROR: 'error'
+  };
 
   /**
-   * LogLevel debug
+   * The angular log service which will be injected by a ng run block
+   * in the configuration section
    *
    * @static
-   * @type {string}
+   * @type {ng.ILogService}
    */
-  public static DEBUG: string = 'debug';
+  public static $log: ng.ILogService;
 
   /**
-   * LogLevel warn
+   * The current configuired log level per instance
    *
-   * @static
-   * @type {string}
+   * @private
+   * @type {number}
    */
-  public static WARN: string = 'warn';
+  private _level: number = ILoggerLevel.NONE;
 
   /**
-   * LogLevel error
+   * Creates an instance of Logger.
    *
-   * @static
-   * @type {string}
+   * @param {string} _className A namespace to identify where the log msg is comming from
    */
-  public static ERROR: string = 'error';
-
-  private _isInfoEnabled: boolean = false;
-  private _isDebugEnabled: boolean = false;
-  private _isWarnEnabled: boolean = false;
-  private _isErrorEnabled: boolean = false;
-
   constructor(private _className: string) {
-    if (Array.isArray(AppConfig.LOGGER) && AppConfig.LOGGER.length !== 0) {
-      this._isInfoEnabled = AppConfig.LOGGER.indexOf(Logger.INFO) >= 0;
-      this._isDebugEnabled = AppConfig.LOGGER.indexOf(Logger.DEBUG) >= 0;
-      this._isWarnEnabled = AppConfig.LOGGER.indexOf(Logger.WARN) >= 0;
-      this._isErrorEnabled = AppConfig.LOGGER.indexOf(Logger.ERROR) >= 0;
+    switch (AppConfig.LOG_LEVEL.toLowerCase()) {
+      case Logger.METHOD.DEBUG:
+        this._level = ILoggerLevel.DEBUG;
+        break;
+
+      case Logger.METHOD.INFO:
+        this._level = ILoggerLevel.INFO;
+        break;
+
+      case Logger.METHOD.WARN:
+        this._level = ILoggerLevel.WARN;
+        break;
+
+      case Logger.METHOD.ERROR:
+        this._level = ILoggerLevel.ERROR;
+        break;
+
+      default:
+        this._level = ILoggerLevel.NONE;
     }
   }
 
+  /**
+   * Get the currently configured namespace of the instance
+   *
+   * @readonly
+   * @type {string}
+   */
   public get className(): string {
     return this._className;
   }
 
   /**
-   * Log an info message to the console
+   * Log a debug message to the console
+   *
+   * @param {string} message
+   * @returns {(...args) => void}
+   */
+  public debug(message: string): (...args) => void {
+    return (...args) => {
+      if (this._level <= ILoggerLevel.DEBUG) {
+        this._log(Logger.METHOD.DEBUG, message, ...args);
+      }
+    };
+  }
+
+  /**
+   * Log a info message to the console
    *
    * @param {string} message
    * @returns {(...args) => void}
    */
   public info(message: string): (...args) => void {
     return (...args) => {
-      if (this._isInfoEnabled) {
-        this._log(Logger.INFO, message, ...args);
+      if (this._level <= ILoggerLevel.INFO) {
+        this._log(Logger.METHOD.INFO, message, ...args);
       }
     };
   }
 
   /**
-   * Log an debug message to the console
+   * Log a warn message to the console
    *
    * @param {string} message
    * @returns {(...args) => void}
    */
-  public debug(message: string, ...args): (...args) => void {
+  public warn(message: string): (...args) => void {
     return (...args) => {
-      if (this._isDebugEnabled) {
-        this._log(Logger.DEBUG, message, ...args);
+      if (this._level <= ILoggerLevel.WARN) {
+        this._log(Logger.METHOD.WARN, message, ...args);
       }
     };
   }
 
   /**
-   * Log an warn message to the console
+   * Log a error message to the console
    *
    * @param {string} message
    * @returns {(...args) => void}
    */
-  public warn(message: string, ...args): (...args) => void {
+  public error(message: string): (...args) => void {
     return (...args) => {
-      if (this._isWarnEnabled) {
-        this._log(Logger.WARN, message, ...args);
+      if (this._level <= ILoggerLevel.ERROR) {
+        this._log(Logger.METHOD.ERROR, message, ...args);
       }
     };
   }
 
   /**
-   * Log an error message to the console
-   *
-   * @param {string} message
-   * @returns {(...args) => void}
-   */
-  public error(message: string, ...args): (...args) => void {
-    return (...args) => {
-      if (this._isErrorEnabled) {
-        this._log(Logger.ERROR, message, ...args);
-      }
-    };
-  }
-
-  /**
-   * Generic log method
+   * A generic log message method which acutally posts the log msg
    *
    * @private
-   * @param {string} type The log type
+   * @param {string} type the log level
    * @param {string} message
-   * @param args Arguments to handover to the browser console logger
+   * @param args
    */
   private _log(type: string, message: string, ...args): void {
-    console[type](this.formatter(message), ...args);
+    Logger.$log[type](this.formatter(message), ...args);
   }
 
   /**
-   * Formats the log message
+   * This method formats the message to a more percic format
    *
    * @private
    * @param {string} message

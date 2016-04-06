@@ -3,6 +3,8 @@
  */
 import angularTranslate from './angularTranslate.config.ts';
 import angularLocalStorage from './angularLocalStorage.config.ts';
+import angularRouter from './angularRouter.config.ts';
+import angularLogger from './angularLogger.config.ts';
 
 /**
  * Define namespace of module
@@ -19,4 +21,7 @@ const namespace = 'app.config';
 export default angular.module(namespace, [])
   .config(angularTranslate)
   .config(angularLocalStorage)
+  .config(angularRouter)
+  .value('$routerRootComponent', 'app')
+  .run(angularLogger)
   .name;

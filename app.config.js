@@ -1,9 +1,9 @@
 module.exports = function (env, pkg) {
   switch (env) {
     case 'prod':
-      return buildConfig('http://api.bubu:0123', []);
+      return buildConfig('http://api.bubu:0123', 'error');
     default:
-      return buildConfig('http://api.bubu:3210', ['info', 'debug', 'warn', 'error']);
+      return buildConfig('http://api.bubu:3210', 'debug');
   }
 
   function buildConfig(apiUrl, logger) {
@@ -12,7 +12,7 @@ module.exports = function (env, pkg) {
       NAME: JSON.stringify(pkg.name),
       VERSION: JSON.stringify(pkg.version),
       API_URL: JSON.stringify(apiUrl),
-      LOGGER: JSON.stringify(logger)
+      LOG_LEVEL: JSON.stringify(logger)
     };
   }
 };

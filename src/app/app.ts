@@ -14,7 +14,6 @@ import 'angular-sanitize';
 /**
  * Import app modules
  */
-import {RouterConfig} from './app.config.ts';
 import Services from './services/services.module.ts';
 import Config from './config/config.module.ts';
 import {default as Home, homeRoute} from './modules/home/home.module.ts';
@@ -51,7 +50,5 @@ angular
     // App modules
     Home
   ])
-  .config(RouterConfig)
-  .value('$routerRootComponent', 'app')
   .component('app', new App());
 

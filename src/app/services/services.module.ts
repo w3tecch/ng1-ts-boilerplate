@@ -1,7 +1,6 @@
 /**
  * Import dependencies
  */
-import LoggerService from './utils/logger.service.ts';
 
 /**
  * Define namespace of module
@@ -15,7 +14,6 @@ const namespace = 'app.services';
  *
  * @type {string}
  */
-export const loggerService = `${namespace}.LoggerService`;
 
 /**
  * Define and export angular setup for this module
@@ -23,5 +21,4 @@ export const loggerService = `${namespace}.LoggerService`;
  * @type {string} returns angular FQDN module name
  */
 export default angular.module(namespace, [])
-  .service(loggerService, LoggerService)
   .name;

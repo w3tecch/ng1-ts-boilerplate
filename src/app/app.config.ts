@@ -5,14 +5,14 @@ declare var ENV: string;
 declare var NAME: string;
 declare var VERSION: string;
 declare var API_URL: string;
-declare var LOGGER: string[];
+declare var LOG_LEVEL: string;
 
 export interface IAppConfig {
   ENV: string;
   NAME: string;
   VERSION: string;
   API_URL: string;
-  LOGGER: string[];
+  LOG_LEVEL: string;
 }
 
 export const AppConfig: IAppConfig = {
@@ -20,14 +20,5 @@ export const AppConfig: IAppConfig = {
   NAME: NAME,
   VERSION: VERSION,
   API_URL: API_URL,
-  LOGGER: LOGGER,
+  LOG_LEVEL: LOG_LEVEL,
 };
-
-/**
- * Angular Router Config
- */
-export var RouterConfig = ($locationProvider) => {
-  $locationProvider.html5Mode(true);
-};
-
-RouterConfig.$inject = ['$locationProvider'];

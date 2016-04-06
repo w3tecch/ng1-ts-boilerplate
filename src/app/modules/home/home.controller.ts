@@ -27,14 +27,14 @@ class HomeController {
 
     // Example logger
     this._logger = new Logger('app.services.HomeController');
-    let exampleInfoLogger = this._logger.info('logger:example');
+    let exampleInfoLogger = this._logger.debug('logger:example');
     exampleInfoLogger('1');
     exampleInfoLogger('2');
 
     // Example mediator
     let testChannelSubscriber = mediatorService.subscribe('mediator:example');
     testChannelSubscriber((a) => {
-      this._logger.info('mediator:example')(a);
+      this._logger.debug('mediator:example')(a);
     });
 
     let testChannelPublisher = mediatorService.publish('mediator:example');
