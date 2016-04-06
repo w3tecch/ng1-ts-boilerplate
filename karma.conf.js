@@ -42,6 +42,7 @@ module.exports = function karmaConfig (config) {
       'PhantomJS'
     ],
 
+    autoWatch: true,
     singleRun: true,
 
     // Configure code coverage reporter
@@ -52,8 +53,39 @@ module.exports = function karmaConfig (config) {
 
     webpack: require('./webpack.test'),
 
-    // Webpack please don't spam the console when running in karma!
-    webpackServer: { noInfo: true }
+    webpackMiddleware: {
+      noInfo: true,
+      stats: {
+        // With console colors
+        colors: true,
+        // add the hash of the compilation
+        hash: true,
+        // add webpack version information
+        version: false,
+        // add timing information
+        timings: true,
+        // add assets information
+        assets: true,
+        // add chunk information
+        chunks: true,
+        // add built modules information to chunk information
+        chunkModules: false,
+        // add built modules information
+        modules: false,
+        // add also information about cached (not built) modules
+        cached: true,
+        // add information about the reasons why modules are included
+        reasons: false,
+        // add the source code of modules
+        source: true,
+        // add details to errors (like resolving log)
+        errorDetails: true,
+        // add the origins of chunks and chunk merging info
+        chunkOrigins: true,
+        // Add messages from child loaders
+        children: false
+      }
+    }
 
   });
 };
