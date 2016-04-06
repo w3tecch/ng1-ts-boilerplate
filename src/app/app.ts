@@ -8,14 +8,16 @@ import '../assets/scss/main.scss';
 import 'angular';
 import '@angular/router/angular1/angular_1_router';
 import 'angular-translate';
+import 'angular-local-storage';
+import 'angular-sanitize';
 
 /**
  * Import app modules
  */
-import {AppConfig, RouterConfig} from './app.config.ts';
+import {RouterConfig} from './app.config.ts';
 import Services from './services/services.module.ts';
 import Config from './config/config.module.ts';
-import {default as home, homeRoute} from './modules/home/home.module.ts';
+import {default as Home, homeRoute} from './modules/home/home.module.ts';
 
 /**
  * App
@@ -37,6 +39,8 @@ angular
 
     // Third-Party Libs
     'pascalprecht.translate',
+    'LocalStorageModule',
+    'ngSanitize',
 
     // Configs, middleware, run...
     Config,
@@ -45,12 +49,9 @@ angular
     Services,
 
     // App modules
-    home
+    Home
   ])
   .config(RouterConfig)
   .value('$routerRootComponent', 'app')
-  .component('app', new App())
-  .run(() => {
-    console.info('Angular is ready!', AppConfig);
-  });
+  .component('app', new App());
 

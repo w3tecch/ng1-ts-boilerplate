@@ -2,6 +2,7 @@
  * Import dependencies
  */
 import angularTranslate from './angularTranslate.config.ts';
+import angularLocalStorage from './angularLocalStorage.config.ts';
 
 /**
  * Define namespace of module
@@ -17,4 +18,5 @@ const namespace = 'app.config';
  */
 export default angular.module(namespace, [])
   .config(angularTranslate)
+  .config(angularLocalStorage)
   .name;
