@@ -18,6 +18,8 @@ import Services from './services/services.module.ts';
 import Config from './config/config.module.ts';
 import {default as Home, homeRoute} from './modules/home/home.module.ts';
 
+import AppConfig from './app.config.ts';
+
 /**
  * App
  */
@@ -50,5 +52,6 @@ angular
     // App modules
     Home
   ])
-  .component('app', new App());
+  .component('app', new App())
+  .run(() => console.log(AppConfig));
 

@@ -1,0 +1,5 @@
+{
+  "NAME": "Development",
+  "API_URL": "http://bubu.com",
+  "LOG_LEVEL": "debug"
+}

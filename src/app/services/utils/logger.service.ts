@@ -1,7 +1,7 @@
 /**
  * Import dependencies
  */
-import {AppConfig} from './../../app.config.ts';
+import AppConfig from './../../app.config.ts';
 import * as moment from 'moment';
 
 /**
@@ -73,7 +73,7 @@ class Logger {
    * @param {string} _className A namespace to identify where the log msg is comming from
    */
   constructor(private _className: string) {
-    switch (AppConfig.LOG_LEVEL.toLowerCase()) {
+    switch (AppConfig.ENV.LOG_LEVEL.toLowerCase()) {
       case Logger.METHOD.DEBUG:
         this._level = ILoggerLevel.DEBUG;
         break;

@@ -1,0 +1,5 @@
+{
+  "NAME": "Production",
+  "API_URL": "http://bubu-prod.com",
+  "LOG_LEVEL": "warn"
+}
