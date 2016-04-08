@@ -14,6 +14,7 @@ import 'angular-sanitize';
 /**
  * Import app modules
  */
+import Decorators from './decorators/decorator.module.ts';
 import Services from './services/services.module.ts';
 import Config from './config/config.module.ts';
 import {default as Home, homeRoute} from './modules/home/home.module.ts';
@@ -47,6 +48,7 @@ angular
     Config,
 
     // Common components, services, filters, models...
+    Decorators,
     Services,
 
     // App modules
