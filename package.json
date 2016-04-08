@@ -9,13 +9,13 @@
   "scripts": {
     "start": "npm run server:dev",
     "server": "npm run server:dev",
-    "server:dev": "webpack-dev-server --progress --profile --colors --display-error-details --inline --content-base src/ --env",
+    "server:dev": "./node_modules/.bin/webpack-dev-server --progress --profile --colors --display-error-details --inline --content-base src/ --env",
     "server:prod": "http-server dist --cors",
     "build": "npm run build:dev",
-    "build:dev": "webpack --config webpack.build.js --progress --profile --colors --display-error-details --display-cached --env",
-    "build:prod": "webpack --config webpack.build.js --progress --profile --colors --display-error-details --display-cached --env prod",
-    "test": "karma start",
-    "test:live": "karma start --auto-watch --no-single-run"
+    "build:dev": "./node_modules/.bin/webpack --config webpack.build.js --progress --profile --colors --display-error-details --display-cached --env",
+    "build:prod": "./node_modules/.bin/webpack --config webpack.build.js --progress --profile --colors --display-error-details --display-cached --env prod",
+    "test": "./node_modules/.bin/karma start",
+    "test:live": "./node_modules/.bin/karma start --auto-watch --no-single-run"
   },
   "dependencies": {
     "@angular/router": "^0.2.0",
@@ -80,8 +80,10 @@
     "sinon-chai": "^2.6.0",
     "style-loader": "^0.13.0",
     "ts-loader": "^0.8.1",
+    "tslint": "^3.7.1",
     "tslint-loader": "^2.1.0",
     "typescript": "^1.8.2",
+    "typings": "^0.7.12",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.14",
     "wiredep": "^2.2.2",
