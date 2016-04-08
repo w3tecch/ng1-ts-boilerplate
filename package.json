@@ -9,7 +9,7 @@
   "scripts": {
     "start": "npm run server:dev",
     "server": "npm run server:dev",
-    "server:dev": "webpack-dev-server --progress --profile --colors --display-error-details --display-cached --inline --content-base src/ --env",
+    "server:dev": "webpack-dev-server --progress --profile --colors --display-error-details --inline --content-base src/ --env",
     "server:prod": "http-server dist --cors",
     "build": "npm run build:dev",
     "build:dev": "webpack --config webpack.build.js --progress --profile --colors --display-error-details --display-cached --env",

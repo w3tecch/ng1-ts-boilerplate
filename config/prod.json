@@ -1,5 +1,5 @@
 {
   "NAME": "Production",
-  "API_URL": "http://bubu-prod.com",
+  "API_URL": "http://jsonplaceholder.typicode.com",
   "LOG_LEVEL": "warn"
 }

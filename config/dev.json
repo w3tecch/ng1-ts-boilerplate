@@ -1,5 +1,5 @@
 {
   "NAME": "Development",
-  "API_URL": "http://bubu.com",
+  "API_URL": "http://jsonplaceholder.typicode.com",
   "LOG_LEVEL": "debug"
 }
