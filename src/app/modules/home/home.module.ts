@@ -1,15 +1,14 @@
 /**
+ * namespace
+ */
+import { namespace as parentNamespace } from './../../app.ts';
+export const namespace = `${parentNamespace}.home`;
+
+/**
  * Import dependencies
  */
 import Route from './home.routes.ts';
 import HomeController from './home.controller.ts';
-
-/**
- * Define namespace of module
- *
- * @type {string}
- */
-const namespace = 'app.home';
 
 /**
  * Export module components

@@ -1,4 +1,9 @@
 /**
+ * Namespace
+ */
+export const namespace = 'app';
+
+/**
  * Import Styles
  */
 import '../assets/scss/main.scss';
@@ -35,7 +40,7 @@ class App implements ng.IComponentOptions {
  * Define your app
  */
 angular
-  .module('app', [
+  .module(namespace, [
     // AngularJS Libs
     'ngComponentRouter',
 

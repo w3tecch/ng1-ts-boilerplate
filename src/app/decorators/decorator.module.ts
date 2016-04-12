@@ -1,14 +1,13 @@
 /**
+ * namespace
+ */
+import { namespace as parentNamespace } from './../app.ts';
+export const namespace = `${parentNamespace}.decorators`;
+
+/**
  * Import dependencies
  */
 import qDecorator from './q.decorator.ts';
-
-/**
- * Define namespace of module
- *
- * @type {string}
- */
-const namespace = 'app.decorators';
 
 /**
  * Export module components

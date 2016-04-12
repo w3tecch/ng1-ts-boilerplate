@@ -1,18 +1,11 @@
 /**
+ * namespace
+ */
+import { namespace as parentNamespace } from './../app.ts';
+export const namespace = `${parentNamespace}.services`;
+
+/**
  * Import dependencies
- */
-
-/**
- * Define namespace of module
- *
- * @type {string}
- */
-const namespace = 'app.services';
-
-/**
- * Export module components
- *
- * @type {string}
  */
 
 /**
