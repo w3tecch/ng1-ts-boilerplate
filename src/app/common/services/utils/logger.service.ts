@@ -1,7 +1,7 @@
 /**
  * Import dependencies
  */
-import AppConfig from './../../app.config.ts';
+import AppConfig from './../../../app.config.ts';
 import * as moment from 'moment';
 
 /**

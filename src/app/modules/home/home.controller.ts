@@ -1,8 +1,8 @@
 /**
  * Import dependencies
  */
-import Logger from './../../services/utils/logger.service.ts';
-import {mediatorService} from './../../services/utils/mediator.service.ts';
+import Logger from './../../common/services/utils/logger.service.ts';
+import {mediatorService} from './../../common/services/utils/mediator.service.ts';
 
 /**
  * An example Controller

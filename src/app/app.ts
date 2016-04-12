@@ -19,8 +19,8 @@ import 'angular-sanitize';
 /**
  * Import app modules
  */
-import Decorators from './decorators/decorator.module.ts';
-import Services from './services/services.module.ts';
+import Decorators from './common/decorators/decorator.module.ts';
+import Services from './common/services/services.module.ts';
 import Config from './config/config.module.ts';
 import {default as Home, homeRoute} from './modules/home/home.module.ts';
 

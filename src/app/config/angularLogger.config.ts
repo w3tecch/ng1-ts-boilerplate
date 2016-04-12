@@ -1,7 +1,7 @@
 /**
  * Import dependencies
  */
-import Logger from './../services/utils/logger.service.ts';
+import Logger from './../common/services/utils/logger.service.ts';
 
 /**
  * Angular Logger Config
