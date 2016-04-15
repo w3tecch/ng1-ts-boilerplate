@@ -22,19 +22,10 @@ import 'angular-sanitize';
 import Decorators from './common/decorators/decorator.module.ts';
 import Services from './common/services/services.module.ts';
 import Config from './config/config.module.ts';
-import {default as Home, homeRoute} from './modules/home/home.module.ts';
+import {default as Home} from './modules/home/home.module.ts';
+import {default as Layout} from './layout/layout.module.ts';
 
 import AppConfig from './app.config.ts';
-
-/**
- * App
- */
-class App implements ng.IComponentOptions {
-  public template = '<h1 translate="TITLE"></h1><ng-outlet></ng-outlet>';
-  public $routeConfig = [
-    {path: '/', name: 'Home', component: homeRoute, useAsDefault: true}
-  ];
-}
 
 /**
  * Define your app
@@ -49,8 +40,9 @@ angular
     'LocalStorageModule',
     'ngSanitize',
 
-    // Configs, middleware, run...
+    // Configs, middleware, run, layout...
     Config,
+    Layout,
 
     // Common components, services, filters, models...
     Decorators,
@@ -59,6 +51,5 @@ angular
     // App modules
     Home
   ])
-  .component('app', new App())
   .run(() => console.log(AppConfig));
 

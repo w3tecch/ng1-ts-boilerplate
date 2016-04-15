@@ -21,6 +21,6 @@ export default angular.module(namespace, [])
   .config(angularTranslate)
   .config(angularLocalStorage)
   .config(angularRouter)
-  .value('$routerRootComponent', 'app')
+  .value('$routerRootComponent', 'layout')
   .run(angularLogger)
   .name;
