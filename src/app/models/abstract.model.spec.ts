@@ -116,9 +116,9 @@ describe('abstract.model', () => {
         });
 
         it('exclude specified properties when sending a request via update', () => {
-            const updateMethod = sinon.spy(httpService, 'post');
+            const updateMethod = sinon.spy(httpService, 'put');
             const model = new HttpNoSendDataModel({
-                id: 1, name: 'Pippi', num: 25, active: true, floatNum: 99.9
+               id: 1, name: 'Pippi', num: 25, active: true, floatNum: 99.9
             });
             model.save();
             expect(updateMethod).to.have.been.calledOnce;
@@ -713,7 +713,7 @@ describe('abstract.model', () => {
                     }
                 );
                 model.attributes.level1.level2.date = date;
-                const createSpy = sinon.spy(model, 'post');
+                const createSpy = sinon.spy(model, 'create');
                 model.save();
                 const attrObject = createSpy.args[0][0];
                 expect(attrObject).to.be.a('object');

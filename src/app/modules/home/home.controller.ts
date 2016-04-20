@@ -2,7 +2,7 @@
  * Import dependencies
  */
 import Logger from './../../common/services/utils/logger.service.ts';
-import {mediatorService} from './../../common/services/utils/mediator.service.ts';
+import {eventBusService} from './../../common/services/utils/eventBus.service.ts';
 import UserModel from './../../models/user.model.ts';
 import TodoModel from './../../models/todo.model.ts';
 
@@ -34,12 +34,12 @@ class HomeController {
     exampleInfoLogger('2');
 
     // Example mediator
-    let testChannelSubscriber = mediatorService.subscribe('mediator:example');
+    let testChannelSubscriber = eventBusService.subscribe('mediator:example');
     testChannelSubscriber((a) => {
       this._logger.debug('mediator:example')(a);
     });
 
-    let testChannelPublisher = mediatorService.publish('mediator:example');
+    let testChannelPublisher = eventBusService.publish('mediator:example');
     testChannelPublisher('gugus 1');
     testChannelPublisher('gugus 2');
 

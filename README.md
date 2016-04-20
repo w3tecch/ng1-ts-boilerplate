@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/hirsch88/ngOneTsWebpack.svg?branch=master)](https://travis-ci.org/hirsch88/ngOneTsWebpack)
-[![GitHub version](https://badge.fury.io/hirsch88/ngOneTsWebpack.svg)]
+[![Dependency Status](https://david-dm.org/hirsch88/ngOneTsWebpack.svg)](https://david-dm.org/hirsch88/ngOneTsWebpack)
+[![devDependency Status](https://david-dm.org/hirsch88/ngOneTsWebpack/dev-status.svg)](https://david-dm.org/hirsch88/ngOneTsWebpack#info=devDependencies)
 
 #ngOneTsWebpack
 
@@ -20,6 +21,9 @@
 ##Test
 
 ##Other Commands
+
+#Usefull Libraries
+- 
 
 #License
 
