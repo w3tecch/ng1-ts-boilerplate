@@ -252,7 +252,7 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    * @returns {ng.IPromise<IAbstractModel>}
    */
   protected get(id: IModelIdentifier): ng.IPromise<J> {
-    return AbstractModel.httpService.read(`/${this.rootUrl}/${id}`).then(r => this.newModel(r));
+    return AbstractModel.httpService.read(`/${this.rootUrl}/${id}`).then(r => <J>this.newModel(r));
   }
 
   /**
@@ -262,7 +262,7 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    * @returns {ng.IPromise<IAbstractModel[]>}
    */
   protected getAll(): ng.IPromise<J[]> {
-    return AbstractModel.httpService.read(`/${this.rootUrl}`).then(r => this.newModel(r));
+    return AbstractModel.httpService.read(`/${this.rootUrl}`).then(r => <J[]>this.newModel(r));
   }
 
   /**
@@ -283,10 +283,10 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
     let relationModel = new relation();
     if (parent) {
       return AbstractModel.httpService.read(`/${relationModel.rootUrl}/${foreignId}/${this.rootUrl}/${localId}`)
-        .then(r => this.newModel(r));
+        .then(r => <J>this.newModel(r));
     } else {
       return AbstractModel.httpService.read(`/${this.rootUrl}/${localId}/${relationModel.rootUrl}/${foreignId}`)
-        .then(r => this.newModel(r, relation));
+        .then(r => <J>this.newModel(r, relation));
     }
   }
 
@@ -305,9 +305,10 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
   ): ng.IPromise<IAbstractModel<any>[]> {
     let relationModel = new relation();
     if (parent) {
-      return AbstractModel.httpService.read(`/${relationModel.rootUrl}/${localId}/${this.rootUrl}`).then(r => this.newModel(r));
+      return AbstractModel.httpService.read(`/${relationModel.rootUrl}/${localId}/${this.rootUrl}`).then(r => <J[]>this.newModel(r));
     } else {
-      return AbstractModel.httpService.read(`/${this.rootUrl}/${localId}/${relationModel.rootUrl}`).then(r => this.newModel(r, relation));
+      return AbstractModel.httpService.read(`/${this.rootUrl}/${localId}/${relationModel.rootUrl}`)
+        .then(r => <J[]>this.newModel(r, relation));
     }
   }
 
@@ -319,7 +320,7 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    * @returns {(ng.IPromise<IAbstractModel | IAbstractModel[]>)}
    */
   protected customGet(url: string): ng.IPromise<J | J[]> {
-    return AbstractModel.httpService.read(url).then(r => this.newModel(r));
+    return AbstractModel.httpService.read(url).then(r => <J | J[]>this.newModel(r));
   }
 
   /**
@@ -347,7 +348,7 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    * @returns {ng.IPromise<IAbstractModel>}
    */
   protected create(data: K): ng.IPromise<J> {
-    return AbstractModel.httpService.create(`/${this.rootUrl}`, data).then(r => this.newModel(r));
+    return AbstractModel.httpService.create(`/${this.rootUrl}`, data).then(r => <J>this.newModel(r));
   }
 
   /**
@@ -358,7 +359,7 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    * @returns {ng.IPromise<IAbstractModel>}
    */
   protected update(data: K): ng.IPromise<J> {
-    return AbstractModel.httpService.update(`/${this.rootUrl}/${this.getId()}`, data).then(r => this.newModel(r));
+    return AbstractModel.httpService.update(`/${this.rootUrl}/${this.getId()}`, data).then(r => <J>this.newModel(r));
   }
 
   /**

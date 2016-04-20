@@ -1,1 +1,1 @@
-/*/// <reference path="./validatejs.d.ts"/>*/
+/// <reference path="./qDecorator.d.ts"/>
