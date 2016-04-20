@@ -6,6 +6,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var precss = require('precss');
 var yargs = require('yargs').argv;
+var path = require('path');
 
 var helpers = require(process.cwd() + '/webpack.helpers.js');
 var appConfig = require(process.cwd() + '/app.config.js')(helpers.getEnv(), helpers.getPkg());
@@ -128,7 +129,7 @@ module.exports = function makeWebpackConfig(options) {
       // You can add here any file extension you want to get copied to your output
       {
         test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
-        loader: 'file'
+        loader: 'url-loader?limit=100000'
       }
     ]
   };
@@ -136,19 +137,11 @@ module.exports = function makeWebpackConfig(options) {
   // ISPARTA LOADER
   // Reference: https://github.com/ColCh/isparta-instrumenter-loader
   // Instrument JS files with Isparta for subsequent code coverage reporting
-  // Skips node_modules and files that end with .test.js
+  // Skips node_modules and files that end with .spec.js
   if (TEST) {
-    config.module.preLoaders.push({
-      test: /\.ts$/,
-      exclude: [
-        /node_modules/,
-        /\.spec\.ts$/
-      ],
-      loader: 'isparta-instrumenter'
-    });
     config.module.loaders.push(
       {
-        test: /\.spec.ts$/,
+        test: /\.ts$/,
         loader: 'ts-loader'
       }
     );
@@ -196,6 +189,17 @@ module.exports = function makeWebpackConfig(options) {
   // Adds the app config to the app
   config.plugins.push(new webpack.DefinePlugin(appConfig));
 
+  // Automatically move all modules defined outside of application directory to vendor bundle.
+  // If you are using more complicated project structure, consider to specify common chunks manually.
+  if (!TEST) {
+    config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: function (module, count) {
+        return module.resource && module.resource.indexOf(path.resolve(__dirname, 'src')) === -1;
+      }
+    }));
+  }
+
   // Reference: https://github.com/webpack/extract-text-webpack-plugin
   // Extract css files
   // Disabled when in test mode or not in build mode
@@ -221,6 +225,13 @@ module.exports = function makeWebpackConfig(options) {
     )
   }
 
+  // Adds webpack HMR support. It act's like livereload,
+  // reloading page after webpack rebuilt modules.
+  // It also updates stylesheets and inline assets without page reloading.
+  if (!TEST && !BUILD) {
+    config.plugins.push(new webpack.HotModuleReplacementPlugin());
+  }
+
   // Add build specific plugins
   if (BUILD) {
     config.plugins.push(
@@ -234,7 +245,15 @@ module.exports = function makeWebpackConfig(options) {
 
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
       // Minify all javascript, switch loaders to minimizing mode
-      new webpack.optimize.UglifyJsPlugin()
+      new webpack.optimize.UglifyJsPlugin({
+        mangle: {
+          // You can specify all variables that should not be mangled.
+          // For example if your vendor dependency doesn't use modules
+          // and relies on global variables. Most of angular modules relies on
+          // angular global variable, so we should keep it unchanged
+          except: ['$super', '$', 'exports', 'require', 'angular']
+        }
+      })
     )
   }
 

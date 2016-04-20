@@ -10,7 +10,7 @@ var webpackHelpers = {
 };
 
 function getEnv() {
-  return process.env.ENV = process.env.NODE_ENV = yargs.env || 'dev';
+  return process.env.ENV = process.env.NODE_ENV = (typeof yargs.env === 'string' ? yargs.env : 'dev');
 }
 
 function getPkg() {
@@ -33,13 +33,11 @@ function getMetadata() {
 }
 
 function getBanner() {
-  return '/**\n' +
-    ' * @name           ' + getPkg().name + '\n' +
-    ' * @description    ' + getPkg().description + '\n\n' +
-    ' * @version        ' + getPkg().version + '\n' +
-    ' * @author         ' + getPkg().author + '\n' +
-    ' * @license        ' + getPkg().license + '\n' +
-    ' */\n';
+  return ' @name           ' + getPkg().name + '\n' +
+         ' @description    ' + getPkg().description + '\n\n' +
+         ' @version        ' + getPkg().version + '\n' +
+         ' @author         ' + getPkg().author + '\n' +
+         ' @license        ' + getPkg().license + '\n';
 }
 
 module.exports = webpackHelpers;

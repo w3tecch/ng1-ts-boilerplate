@@ -1,34 +1,26 @@
 /**
  * Environment Config
  */
-declare var ENV: string;
-declare var NAME: string;
-declare var VERSION: string;
-declare var API_URL: string;
-declare var LOGGER: string[];
-
-export interface IAppConfig {
-  ENV: string;
+interface IAppConfigEnv {
   NAME: string;
-  VERSION: string;
   API_URL: string;
-  LOGGER: string[];
+  LOG_LEVEL: string;
 }
 
-export const AppConfig: IAppConfig = {
-  ENV: ENV,
+declare var NAME: string;
+declare var VERSION: string;
+declare var ENV: IAppConfigEnv;
+
+export interface IAppConfig {
+  NAME: string;
+  VERSION: string;
+  ENV: IAppConfigEnv;
+}
+
+const AppConfig: IAppConfig = {
   NAME: NAME,
   VERSION: VERSION,
-  API_URL: API_URL,
-  LOGGER: LOGGER,
+  ENV: ENV
 };
 
-/**
- * Angular Router Config
- */
-export var RouterConfig = ($urlRouterProvider) => {
-  console.info('RouterConfig');
-  $urlRouterProvider.otherwise('/');
-};
-
-RouterConfig.$inject = ['$urlRouterProvider'];
+export default AppConfig;

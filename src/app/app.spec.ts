@@ -1,9 +1,9 @@
-describe('App', () => {
-  it('my first test', () => {
-    expect('test').toBe('test');
-  });
+// describe('App', () => {
+//   it('my first test', () => {
+//     expect('test').toBe('test');
+//   });
 
-  it('my second test', () => {
-    expect('bubu').toBe('bubu');
-  });
-});
+//   it('my second test', () => {
+//     expect('bubu').toBe('bubu');
+//   });
+// });
