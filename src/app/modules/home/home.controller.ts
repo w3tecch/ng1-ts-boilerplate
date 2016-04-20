@@ -2,7 +2,7 @@
  * Import dependencies
  */
 import Logger from './../../common/services/utils/logger.service.ts';
-import {eventBusService} from './../../common/services/utils/event-bus.service.ts';
+import {eventBusService} from './../../common/services/utils/eventBus.service.ts';
 import UserModel from './../../models/user.model.ts';
 import TodoModel from './../../models/todo.model.ts';
 
