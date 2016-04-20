@@ -1,7 +1,7 @@
 /**
  * namespace
  */
-import { namespace as parentNamespace } from './../../app.ts';
+const parentNamespace = 'app';
 export const namespace = `${parentNamespace}.home`;
 
 /**
