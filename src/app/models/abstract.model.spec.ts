@@ -62,7 +62,7 @@ describe('abstract.model', () => {
             }
 
             it('should happen by default for identifier "id"', () => {
-                const updateMethod = sinon.spy(httpService, 'update');
+                const updateMethod = sinon.spy(httpService, 'put');
                 const model = new TestModel({id: 55, name: 'Pippi'});
                 model.save();
                 expect(updateMethod).to.have.been.calledOnce;
@@ -70,7 +70,7 @@ describe('abstract.model', () => {
             });
 
             it('should be done for configured identifier', () => {
-                const updateMethod = sinon.spy(httpService, 'update');
+                const updateMethod = sinon.spy(httpService, 'put');
                 const model = new IdentifierModel({name: 'Pippi', num: 55});
                 model.save();
                 expect(updateMethod).to.have.been.calledOnce;
@@ -86,7 +86,7 @@ describe('abstract.model', () => {
                     this.httpSendIdentifier = true;
                 }
             }
-            const updateMethod = sinon.spy(httpService, 'update');
+            const updateMethod = sinon.spy(httpService, 'put');
             const model = new SendIdentifierModel({id: 69, name: 'Pippi'});
             model.save();
             expect(updateMethod).to.have.been.calledOnce;
@@ -105,7 +105,7 @@ describe('abstract.model', () => {
         }
 
         it('exclude properties "createdAt", "updatedAt" by default', () => {
-            const createMethod = sinon.spy(httpService, 'create');
+            const createMethod = sinon.spy(httpService, 'post');
             const model = new TestModel({
                 name: 'Pippi', num: 25,
                 createdAt: 'just now', updatedAt: 'never'
@@ -116,7 +116,7 @@ describe('abstract.model', () => {
         });
 
         it('exclude specified properties when sending a request via update', () => {
-            const updateMethod = sinon.spy(httpService, 'update');
+            const updateMethod = sinon.spy(httpService, 'post');
             const model = new HttpNoSendDataModel({
                 id: 1, name: 'Pippi', num: 25, active: true, floatNum: 99.9
             });
@@ -126,7 +126,7 @@ describe('abstract.model', () => {
         });
 
         it('exclude specified properties when sending a request via save', () => {
-            const createMethod = sinon.spy(httpService, 'create');
+            const createMethod = sinon.spy(httpService, 'post');
             const model = new HttpNoSendDataModel({
                 name: 'Pippi', num: 25, active: true, floatNum: 99.9
             });
@@ -186,7 +186,7 @@ describe('abstract.model', () => {
         describe('save', () => {
 
             it('should trigger POST request for new models', () => {
-                const createMethod = sinon.spy(httpService, 'create');
+                const createMethod = sinon.spy(httpService, 'post');
                 const tModel = new TestModel({name: 'Pippi', num: 25});
                 tModel.save();
                 expect(createMethod).to.have.been.calledOnce;
@@ -194,7 +194,7 @@ describe('abstract.model', () => {
             });
 
             it('should trigger PUSH request for existing models', () => {
-                const updateMethod = sinon.spy(httpService, 'update');
+                const updateMethod = sinon.spy(httpService, 'put');
                 const tModel = new TestModel({id: 1, name: 'Pippi', num: 25});
                 tModel.save();
                 expect(updateMethod).to.have.been.calledOnce;
@@ -216,7 +216,7 @@ describe('abstract.model', () => {
         describe('destroy', () => {
 
             it('should trigger DELETE request', () => {
-                const destroyMethod = sinon.spy(httpService, 'destroy');
+                const destroyMethod = sinon.spy(httpService, 'delete');
                 const tModel = new TestModel({id: 99});
                 tModel.destroy();
                 expect(destroyMethod).to.have.been.calledOnce;
@@ -228,7 +228,7 @@ describe('abstract.model', () => {
         describe('find', () => {
 
             it('should trigger corresponding GET request', () => {
-                const readMethod = sinon.spy(httpService, 'read');
+                const readMethod = sinon.spy(httpService, 'get');
                 TestModel.api.find(1);
                 expect(readMethod).to.have.been.calledOnce;
                 expect(readMethod).to.have.been.calledWith('/users/1');
@@ -259,7 +259,7 @@ describe('abstract.model', () => {
         describe('findAll', () => {
 
             it('should trigger corresponding GET request', () => {
-                const readMethod = sinon.spy(httpService, 'read');
+                const readMethod = sinon.spy(httpService, 'get');
                 TestModel.api.findAll();
                 expect(readMethod).to.have.been.calledOnce;
                 expect(readMethod).to.have.been.calledWith('/users');
@@ -314,7 +314,7 @@ describe('abstract.model', () => {
         describe('allRelation', () => {
 
             it('should trigger corresponding GET request', () => {
-                const readMethod = sinon.spy(httpService, 'read');
+                const readMethod = sinon.spy(httpService, 'get');
                 TestModel.api.allRelation(12, RelationModel);
                 expect(readMethod).to.have.been.calledOnce;
                 expect(readMethod).to.have.been.calledWith('/users/12/posts');
@@ -332,7 +332,7 @@ describe('abstract.model', () => {
             });
 
             it('parent=true: should trigger corresponding GET request', () => {
-                const readMethod = sinon.spy(httpService, 'read');
+                const readMethod = sinon.spy(httpService, 'get');
                 TestModel.api.allRelation(12, RelationModel, true);
                 expect(readMethod).to.have.been.calledOnce;
                 expect(readMethod).to.have.been.calledWith('/posts/12/users');
@@ -354,7 +354,7 @@ describe('abstract.model', () => {
         describe('findRelation', () => {
 
             it('should trigger corresponding GET request', () => {
-                const readMethod = sinon.spy(httpService, 'read');
+                const readMethod = sinon.spy(httpService, 'get');
                 TestModel.api.findRelation(12, RelationModel, 66);
                 expect(readMethod).to.have.been.calledOnce;
                 expect(readMethod).to.have.been.calledWith('/users/12/posts/66');
@@ -371,7 +371,7 @@ describe('abstract.model', () => {
             });
 
             it('parent=true: should trigger corresponding GET request', () => {
-                const readMethod = sinon.spy(httpService, 'read');
+                const readMethod = sinon.spy(httpService, 'get');
                 TestModel.api.findRelation(12, RelationModel, 66, true);
                 expect(readMethod).to.have.been.calledOnce;
                 expect(readMethod).to.have.been.calledWith('/posts/66/users/12');
@@ -713,7 +713,7 @@ describe('abstract.model', () => {
                     }
                 );
                 model.attributes.level1.level2.date = date;
-                const createSpy = sinon.spy(model, 'create');
+                const createSpy = sinon.spy(model, 'post');
                 model.save();
                 const attrObject = createSpy.args[0][0];
                 expect(attrObject).to.be.a('object');

@@ -1,31 +1,31 @@
 /**
- * The Mediator callback interface
+ * The EventBus callback interface
  *
  * @export
- * @interface IMediatorCallback
+ * @interface IEventBusCallback
  */
-export interface IMediatorCallback {
+export interface IEventBusCallback {
   (...args): void;
 }
 
 /**
- * This is the Mediator service. This service isn't bound to the NG dependency/injection system
+ * This is the EventBus service. This service isn't bound to the NG dependency/injection system
  *
  * @export
- * @class Mediator
+ * @class EventBus
  */
-export class Mediator {
+export class EventBus {
 
   /**
    * A list off all callbacks registered
    *
    * @private
-   * @type {{ [event: string]: IMediatorCallback[] }}
+   * @type {{ [event: string]: IEventBusCallback[] }}
    */
-  private _callbacks: { [event: string]: IMediatorCallback[] };
+  private _callbacks: { [event: string]: IEventBusCallback[] };
 
   /**
-   * Creates an instance of Mediator.
+   * Creates an instance of EventBus.
    */
   constructor() {
     this._callbacks = {};
@@ -34,9 +34,9 @@ export class Mediator {
   /**
    * Returns a list off all currently registerd callbacks
    *
-   * @returns {{ [event: string]: IMediatorCallback[] }}
+   * @returns {{ [event: string]: IEventBusCallback[] }}
    */
-  public list(): { [event: string]: IMediatorCallback[] } {
+  public list(): { [event: string]: IEventBusCallback[] } {
     return this._callbacks;
   }
 
@@ -59,10 +59,10 @@ export class Mediator {
    * Let's you subscribe to a specific channel
    *
    * @param {string} channel
-   * @returns {(callback: IMediatorCallback) => () => boolean}
+   * @returns {(callback: IEventBusCallback) => () => boolean}
    */
-  public subscribe(channel: string): (callback: IMediatorCallback) => () => boolean {
-    return (callback: IMediatorCallback) => {
+  public subscribe(channel: string): (callback: IEventBusCallback) => () => boolean {
+    return (callback: IEventBusCallback) => {
       let callbacks = this._callbacks[channel] || (this._callbacks[channel] = []);
       callbacks.push(callback);
 
@@ -86,4 +86,4 @@ export class Mediator {
 /**
  * Export the Service
  */
-export var mediatorService = new Mediator();
+export var eventBusService = new EventBus();

@@ -13,19 +13,19 @@ export interface IHttpUtilService {
   /**
    * Create request to create a new object at the database
    */
-  create(url: string, data: any, params?: any, skipAuthorization?: boolean): ng.IPromise<any>;
+  post(url: string, data: any, params?: any, skipAuthorization?: boolean): ng.IPromise<any>;
   /**
    * Reads items from the backend
    */
-  read(url: string, params?: any, skipAuthorization?: boolean): ng.IPromise<any>;
+  get(url: string, params?: any, skipAuthorization?: boolean): ng.IPromise<any>;
   /**
    * Updated the given item at the backends database
    */
-  update(url: string, data: any, params?: any, skipAuthorization?: boolean): ng.IPromise<any>;
+  put(url: string, data: any, params?: any, skipAuthorization?: boolean): ng.IPromise<any>;
   /**
    * Deletes the given item at the backends database
    */
-  destroy(url: string, params?: any, skipAuthorization?: boolean): ng.IPromise<any>;
+  delete(url: string, params?: any, skipAuthorization?: boolean): ng.IPromise<any>;
   /**
    * This is a helper method for custom requests
    */
@@ -68,7 +68,7 @@ class HttpUtilService {
    * @param {boolean} [skipAuthorization=false] If checked the autorization will be skiped
    * @returns {ng.IPromise<any>} Return respone as promise
    */
-  public create(url: string, data: any, params?: any, skipAuthorization: boolean = false): ng.IPromise<any> {
+  public post(url: string, data: any, params?: any, skipAuthorization: boolean = false): ng.IPromise<any> {
     return this.request('POST', AppConfig.ENV.API_URL + url, skipAuthorization, params, data);
   }
 
@@ -80,7 +80,7 @@ class HttpUtilService {
    * @param {boolean} [skipAuthorization=false] If checked the autorization will be skiped
    * @returns {ng.IPromise<any>} Return respone as promise
    */
-  public read(url: string, params?: any, skipAuthorization: boolean = false): ng.IPromise<any> {
+  public get(url: string, params?: any, skipAuthorization: boolean = false): ng.IPromise<any> {
     return this.request('GET', AppConfig.ENV.API_URL + url, skipAuthorization, params);
   }
 
@@ -93,7 +93,7 @@ class HttpUtilService {
    * @param {boolean} [skipAuthorization=false] If checked the autorization will be skiped
    * @returns {ng.IPromise<any>} Return respone as promise
    */
-  public update(url: string, data: any, params?: any, skipAuthorization: boolean = false): ng.IPromise<any> {
+  public put(url: string, data: any, params?: any, skipAuthorization: boolean = false): ng.IPromise<any> {
     return this.request('PUT', AppConfig.ENV.API_URL + url, skipAuthorization, params, data);
   }
 
@@ -105,7 +105,7 @@ class HttpUtilService {
    * @param {boolean} [skipAuthorization=false] If checked the autorization will be skiped
    * @returns {ng.IPromise<any>} Return respone as promise
    */
-  public destroy(url: string, params?: any, skipAuthorization: boolean = false): ng.IPromise<any> {
+  public delete(url: string, params?: any, skipAuthorization: boolean = false): ng.IPromise<any> {
     return this.request('DELETE', AppConfig.ENV.API_URL + url, skipAuthorization, params);
   }
 
