@@ -1,0 +1,12 @@
+
+language: node_js
+node_js:
+  - "5.9.0"
+install:
+  - npm install
+before_script:
+  - npm install -g typescript
+  - npm install -g typings
+  - typings install
+notifications:
+  email: false
