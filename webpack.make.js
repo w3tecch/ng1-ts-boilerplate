@@ -115,6 +115,10 @@ module.exports = function makeWebpackConfig(options) {
       {
         test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
         loader: 'url-loader?limit=20000'
+      },
+      {
+        test: require.resolve("jquery"),
+        loader: 'expose?$!expose?jQuery'
       }
     ]
   };
