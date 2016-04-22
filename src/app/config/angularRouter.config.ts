@@ -2,7 +2,7 @@
  * Angular Router Config
  */
 const angularRouter = ($locationProvider) => {
-  $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode(false);
 };
 
 angularRouter.$inject = ['$locationProvider'];

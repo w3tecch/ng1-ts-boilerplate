@@ -112,7 +112,7 @@ module.exports = function makeWebpackConfig(options) {
       // Allow loading html through js
       {
         test: /\.html$/,
-        loader: 'raw-loader'
+        loader: 'html'
       },
       // SASS LOADER
       // Reference: https://github.com/jtangelder/sass-loader
@@ -129,7 +129,7 @@ module.exports = function makeWebpackConfig(options) {
       // You can add here any file extension you want to get copied to your output
       {
         test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
-        loader: 'url-loader?limit=100000'
+        loader: 'url-loader?limit=20000'
       }
     ]
   };
