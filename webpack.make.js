@@ -112,7 +112,7 @@ module.exports = function makeWebpackConfig(options) {
       // Allow loading html through js
       {
         test: /\.html$/,
-        loader: 'raw-loader'
+        loader: 'html'
       },
       // SASS LOADER
       // Reference: https://github.com/jtangelder/sass-loader
