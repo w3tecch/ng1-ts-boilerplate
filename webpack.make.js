@@ -53,24 +53,9 @@ module.exports = function makeWebpackConfig(options) {
     config.output = {
       path: helpers.root('dist'),
       filename: BUILD ? '[name].[hash].js' : '[name].bundle.js',
-      sourceMapFilename: 'bundle.map'
+      sourceMapFilename: 'bundle.map',
+      publicPath: BUILD ? '/' : 'http://' + helpers.getMetadata().host + ':' + helpers.getMetadata().port + '/'
     };
-    //config.output = {
-    //  // Absolute output directory
-    //  path: __dirname + '/public',
-    //
-    //  // Output path from the view of the page
-    //  // Uses webpack-dev-server in development
-    //  publicPath: BUILD ? '/' : 'http://localhost:8080/',
-    //
-    //  // Filename for entry points
-    //  // Only adds hash in build mode
-    //  filename: BUILD ? '[name].[hash].js' : '[name].bundle.js',
-    //
-    //  // Filename for non-entry points
-    //  // Only adds hash in build mode
-    //  chunkFilename: BUILD ? '[name].[hash].js' : '[name].bundle.js'
-    //}
   }
 
   /**
