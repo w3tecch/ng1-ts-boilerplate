@@ -67,6 +67,13 @@ class HomeController {
     userTodo1.then((todos: TodoModel) => console.log(todos));
   }
 
+  public checkEs6Support(): any {
+    this._logger = new Logger('app.services.HomeController');
+    let es6Logger = this._logger.debug('logger:ES6');
+    es6Logger('Test ES6 Support: ');
+    console.log(Reflect.get({ qux: 987 }, 'qux') === 987);
+  };
+
   /**
    * An example method
    *

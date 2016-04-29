@@ -10,6 +10,7 @@ import '../assets/scss/main.scss';
 /**
  * Import Third Libraries
  */
+import 'core-js/es6';
 import 'jquery';
 import 'angular';
 import '@angular/router/angular1/angular_1_router';

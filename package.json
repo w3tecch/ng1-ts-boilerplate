@@ -23,9 +23,10 @@
     "angular-local-storage": "^0.2.2",
     "angular-sanitize": "^1.4.9",
     "angular-translate": "^2.9.0",
-    "jquery": "^2.2.3",
     "bootstrap": "^3.3.6",
+    "core-js": "^2.3.0",
     "font-awesome": "^4.5.0",
+    "jquery": "^2.2.3",
     "lodash": "^4.2.1",
     "moment": "^2.11.2"
   },
