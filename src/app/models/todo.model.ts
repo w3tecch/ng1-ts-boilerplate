@@ -14,31 +14,55 @@ export interface ITodoModelAttributes {
 export interface ITodoModel extends IAbstractModel<ITodoModelAttributes> {}
 
 /**
- * The Task model class
+ * Todo Model
  *
- * @class TaskModel
- * @extends {AbstractModel}
- * @implements {ITaskModel}
+ * @class TodoModel
+ * @extends {AbstractModel<ITodoModelAttributes, ITodoModel>}
+ * @implements {ITodoModel}
  */
 class TodoModel extends AbstractModel<ITodoModelAttributes, ITodoModel> implements ITodoModel {
 
   public static api = new TodoModel();
 
-  /* tslint:disable:no-unused-variable */
   /**
    * The base url for this model
    *
    * @private
    * @static
    */
-  public rootUrl = 'todos';
-  /* tslint:enable:no-unused-variable */
+  private static rootUrl = 'todos';
+
+  /**
+   * The version header fot this model
+   *
+   * @private
+   * @static
+   */
+  private static version = 'todo.v1';
+
+  /**
+   * Provide the base url to the abstract model
+   *
+   * @returns {string}
+   */
+  public getRootUrl(): string {
+    return TodoModel.rootUrl;
+  }
+
+  /**
+   * Provide the version to the abstract model
+   *
+   * @returns {string}
+   */
+  public getVersion(): string {
+    return TodoModel.version;
+  }
 
   /**
    * The available attributes for this model
    *
    * @protected
-   * @returns {IModelFillAbles} (description)
+   * @returns {IModelFillAbles}
    */
   protected fillAbles(): IModelFillAbles {
     return {
@@ -48,6 +72,16 @@ class TodoModel extends AbstractModel<ITodoModelAttributes, ITodoModel> implemen
       completed: IModelFillAblesTypes.BOOL
     };
   };
+
+  /**
+   * The attributes which will be sent with POST/PUT
+   *
+   * @protected
+   * @returns {IModelFillAbles}
+   */
+  protected fillAblesCU(): IModelFillAbles {
+    return this.fillAbles();
+  }
 }
 
 export default TodoModel;
