@@ -1,11 +1,11 @@
 /**
  * Import dependencies
  */
-import {httpService} from './../common/services/services.module.ts';
+import httpService, {IHttpUtilService} from './../common/services/utils/http.service.ts';
 import AbstractModel from './../models/abstract.model.ts';
 
-const angularModel = (httpService) => {
-  AbstractModel.httpService = httpService;
+const angularModel = (httpServiceSerivce: IHttpUtilService) => {
+  AbstractModel.httpService = httpServiceSerivce;
 };
 angularModel.$inject = [httpService];
 

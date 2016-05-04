@@ -10,8 +10,7 @@ const expect = chai.expect;
 
 import * as moment from 'moment';
 import AbstractModel, {IModelFillAbles, IModelFillAblesTypes, IAbstractModel} from './abstract.model.ts';
-import {IHttpUtilService} from '../common/services/utils/http.service.ts';
-import {httpService as httpServiceName} from '../common/services/services.module.ts';
+import httpServiceName, {IHttpUtilService} from '../common/services/utils/http.service.ts';
 
 interface ISecondTestModelAttributes {
     id: string;

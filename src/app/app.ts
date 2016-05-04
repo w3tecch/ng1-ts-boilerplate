@@ -22,10 +22,9 @@ import 'angular-sanitize';
  * Import app modules
  */
 import Decorators from './common/decorators/decorator.module.ts';
-import Services from './common/services/services.module.ts';
 import Config from './config/config.module.ts';
-import {default as Home} from './modules/home/home.module.ts';
-import {default as Layout} from './layout/layout.module.ts';
+import Home from './modules/home/home.module.ts';
+import Layout from './layout/layout.module.ts';
 
 import AppConfig from './app.config.ts';
 import Logger from './common/services/utils/logger.service.ts';
@@ -49,7 +48,6 @@ angular
 
     // Common components, services, filters, models...
     Decorators,
-    Services,
 
     // App modules
     Home

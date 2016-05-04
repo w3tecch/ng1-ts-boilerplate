@@ -1,7 +1,5 @@
 import { expect } from 'chai';
-import servicesModule from '../services.module.ts';
-import {IHttpUtilService} from './http.service.ts';
-import {httpService as httpServiceName} from '../services.module.ts';
+import httpServiceName, {IHttpUtilService} from './http.service.ts';
 import AppConfig from '../../../app.config.ts';
 
 describe('http.service', () => {
@@ -10,7 +8,7 @@ describe('http.service', () => {
     let httpService: IHttpUtilService;
 
     beforeEach(() => {
-        angular.mock.module(servicesModule);
+        angular.mock.module(httpServiceName);
         angular.mock.inject(['$httpBackend', httpServiceName, ($httpBackend: ng.IHttpBackendService, _httpService_: IHttpUtilService) => {
             httpBackend = $httpBackend;
             httpService = _httpService_;
