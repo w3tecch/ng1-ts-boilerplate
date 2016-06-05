@@ -1,9 +1,4 @@
 /**
- * Namespace
- */
-export const namespace = 'app';
-
-/**
  * Import Styles
  */
 import '../assets/scss/main.scss';
@@ -23,8 +18,8 @@ import 'angular-sanitize';
  */
 import Decorators from './common/decorators/decorator.module.ts';
 import Config from './config/config.module.ts';
-import Home from './modules/home/home.module.ts';
-import Layout from './layout/layout.module.ts';
+import Home from './modules/home/home.routes.ts';
+import Layout from './layout/layout.routes.ts';
 
 import AppConfig from './app.config.ts';
 import Logger from './common/services/utils/logger.service.ts';
@@ -33,7 +28,7 @@ import Logger from './common/services/utils/logger.service.ts';
  * Define your app
  */
 angular
-  .module(namespace, [
+  .module('app', [
     // AngularJS Libs
     'ngComponentRouter',
 

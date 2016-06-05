@@ -1,10 +1,4 @@
 /**
- * namespace
- */
-const parentNamespace = 'app';
-export const namespace = `${parentNamespace}.config`;
-
-/**
  * Import dependencies
  */
 import angularTranslate from './angularTranslate.config.ts';
@@ -19,7 +13,7 @@ import httpService from './../common/services/utils/http.service.ts';
  *
  * @type {string} returns angular FQDN module name
  */
-export default angular.module(namespace, [
+export default angular.module(module.id.toString(), [
   httpService
 ])
   .config(angularTranslate)

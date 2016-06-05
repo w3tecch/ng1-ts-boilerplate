@@ -1,10 +1,4 @@
 /**
- * namespace
- */
-const parentNamespace = 'app';
-export const namespace = `${parentNamespace}.decorators`;
-
-/**
  * Import dependencies
  */
 import qDecorator from './q.decorator.ts';
@@ -20,6 +14,6 @@ import qDecorator from './q.decorator.ts';
  *
  * @type {string} returns angular FQDN module name
  */
-export default angular.module(namespace, [])
+export default angular.module(module.id.toString(), [])
   .config(qDecorator)
   .name;

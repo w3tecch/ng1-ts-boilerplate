@@ -1,11 +1,4 @@
 /**
- * namespace
- */
-const parentNamespace = 'app';
-const namespace = `${parentNamespace}.services`;
-export const httpService = `${namespace}.httpService`;
-
-/**
  * Import dependencies
  */
 import AppConfig from './../../../app.config.ts';
@@ -186,6 +179,7 @@ class HttpUtilService implements IHttpUtilService {
   }
 }
 
+export const httpService = `${module.id}.httpService`;
 export default angular.module(httpService, [])
   .service(httpService, HttpUtilService)
   .name;
