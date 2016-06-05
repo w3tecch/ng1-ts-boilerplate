@@ -1,3 +1,7 @@
+/**
+ * Chai documentation: http://chaijs.com/api/bdd/
+ */
+
 /* tslint:disable:no-null-keyword */
 import * as chai from 'chai';
 import * as sinonChai from 'sinon-chai';
@@ -6,11 +10,15 @@ const expect = chai.expect;
 
 import * as moment from 'moment';
 import AbstractModel, {IModelFillAbles, IModelFillAblesTypes, IAbstractModel} from './abstract.model.ts';
-import {IHttpUtilService} from '../common/services/utils/http.service.ts';
-import {httpService as httpServiceName} from '../common/services/services.module.ts';
+import httpServiceName, {IHttpUtilService} from '../common/services/utils/http.service.ts';
+
+interface ISecondTestModelAttributes {
+    id: string;
+    name: string;
+}
 
 interface ITestModelAttributes {
-    id: number;
+    id: string;
     name: string;
     num: number;
     active: boolean;
@@ -18,20 +26,38 @@ interface ITestModelAttributes {
     some: {
         name: string;
     };
+    entityId: number;
+    entity: ISecondTestModelAttributes;
 }
 
 interface ITestModel extends IAbstractModel<ITestModelAttributes> {}
 
 class TestModel extends AbstractModel<ITestModelAttributes, ITestModel> {
+    public getVersion(): string {
+        return 'user.v1';
+    }
+    public getRootUrl (): string {
+        return 'users';
+    }
     public static api = new TestModel();
-    public rootUrl = 'users';
     protected fillAbles(): IModelFillAbles {
         return {
             id: IModelFillAblesTypes.NUMBER,
             name: IModelFillAblesTypes.STRING,
             num: IModelFillAblesTypes.NUMBER,
             active: IModelFillAblesTypes.BOOL,
-            floatNum: IModelFillAblesTypes.FLOAT
+            floatNum: IModelFillAblesTypes.FLOAT,
+            entityId: (testModel: ITestModelAttributes): string => testModel.entity && testModel.entity.id,
+            entity: IModelFillAblesTypes.OBJECT
+        };
+    }
+    protected fillAblesCU(): IModelFillAbles {
+        return {
+            name: IModelFillAblesTypes.STRING,
+            num: IModelFillAblesTypes.NUMBER,
+            active: IModelFillAblesTypes.BOOL,
+            floatNum: IModelFillAblesTypes.FLOAT,
+            entityId: IModelFillAblesTypes.NUMBER
         };
     }
 }
@@ -50,89 +76,53 @@ describe('abstract.model', () => {
         }]);
     });
 
+    describe('header construction', () => {
+
+        it('should create accept, content-type headers based on model version', () => {
+            httpBackend.expect('POST', /.*users$/, undefined, {
+                'Accept': 'application/vnd.scp.user.v1+json',
+                'Content-Type': 'application/vnd.scp.user.v1+json'
+            }).respond({});
+            const model = new TestModel({name: 'Pippi'});
+            model.save();
+            httpBackend.flush();
+        });
+
+    });
+
     describe('identifier', () => {
 
         describe('exclusion from requests', () => {
 
-            class IdentifierModel extends TestModel {
-                constructor (attrs?: Object) {
-                    super(attrs);
-                    this.identifier = 'name';
-                }
-            }
-
             it('should happen by default for identifier "id"', () => {
-                const updateMethod = sinon.spy(httpService, 'put');
+                httpBackend.expect('PUT', /.*users\/55$/, {name: 'Pippi'}).respond({});
                 const model = new TestModel({id: 55, name: 'Pippi'});
                 model.save();
-                expect(updateMethod).to.have.been.calledOnce;
-                expect(updateMethod).to.have.been.calledWith('/users/55', {name: 'Pippi'});
+                httpBackend.flush();
             });
 
-            it('should be done for configured identifier', () => {
-                const updateMethod = sinon.spy(httpService, 'put');
-                const model = new IdentifierModel({name: 'Pippi', num: 55});
+            it('should be done for undefined update fillables', () => {
+                httpBackend.expect('PUT', /.*users\/55$/, {name: 'Pippi'}).respond({});
+                const model = new TestModel({id: 55, name: 'Pippi', entity: { name: 'second Pippi'}});
                 model.save();
-                expect(updateMethod).to.have.been.calledOnce;
-                expect(updateMethod).to.have.been.calledWith('/users/Pippi', {num: 55});
+                httpBackend.flush();
             });
 
         });
 
         it('should be included in requests when configured', () => {
+            httpBackend.expect('PUT', /.*users\/69$/, {id: '69', name: 'Pippi'}).respond({});
             class SendIdentifierModel extends TestModel {
-                constructor (attrs?: Object) {
-                    super(attrs);
-                    this.httpSendIdentifier = true;
+                protected fillAblesCU(): IModelFillAbles {
+                    return {
+                        id: IModelFillAblesTypes.STRING,
+                        name: IModelFillAblesTypes.STRING
+                    };
                 }
             }
-            const updateMethod = sinon.spy(httpService, 'put');
-            const model = new SendIdentifierModel({id: 69, name: 'Pippi'});
+            const model = new SendIdentifierModel({id: '69', name: 'Pippi'});
             model.save();
-            expect(updateMethod).to.have.been.calledOnce;
-            expect(updateMethod).to.have.been.calledWith('/users/69', {id: 69, name: 'Pippi'});
-        });
-
-    });
-
-    describe('httpNotSendData', () => {
-
-        class HttpNoSendDataModel extends TestModel {
-            constructor (attrs?: Object) {
-                super(attrs);
-                this.httpNotSendData = this.httpNotSendData.concat(['name', 'active']);
-            }
-        }
-
-        it('exclude properties "createdAt", "updatedAt" by default', () => {
-            const createMethod = sinon.spy(httpService, 'post');
-            const model = new TestModel({
-                name: 'Pippi', num: 25,
-                createdAt: 'just now', updatedAt: 'never'
-            });
-            model.save();
-            expect(createMethod).to.have.been.calledOnce;
-            expect(createMethod).to.have.been.calledWith('/users', {name: 'Pippi', num: 25});
-        });
-
-        it('exclude specified properties when sending a request via update', () => {
-            const updateMethod = sinon.spy(httpService, 'put');
-            const model = new HttpNoSendDataModel({
-               id: 1, name: 'Pippi', num: 25, active: true, floatNum: 99.9
-            });
-            model.save();
-            expect(updateMethod).to.have.been.calledOnce;
-            expect(updateMethod).to.have.been.calledWith('/users/1', {floatNum: 99.9, num: 25});
-        });
-
-        it('exclude specified properties when sending a request via save', () => {
-            const createMethod = sinon.spy(httpService, 'post');
-            const model = new HttpNoSendDataModel({
-                name: 'Pippi', num: 25, active: true, floatNum: 99.9
-            });
-            model.save();
-            expect(createMethod).to.have.been.calledOnce;
-            expect(createMethod).to.have.been.calledWith('/users', {floatNum: 99.9, num: 25});
+            httpBackend.flush();
         });
 
     });
@@ -186,19 +176,17 @@ describe('abstract.model', () => {
         describe('save', () => {
 
             it('should trigger POST request for new models', () => {
-                const createMethod = sinon.spy(httpService, 'post');
+                httpBackend.expect('POST', /.*users$/, {name: 'Pippi', num: 25}).respond({});
                 const tModel = new TestModel({name: 'Pippi', num: 25});
                 tModel.save();
-                expect(createMethod).to.have.been.calledOnce;
-                expect(createMethod).to.have.been.calledWith('/users', {name: 'Pippi', num: 25});
+                httpBackend.flush();
             });
 
-            it('should trigger PUSH request for existing models', () => {
-                const updateMethod = sinon.spy(httpService, 'put');
+            it('should trigger PUT request for existing models', () => {
+                httpBackend.expect('PUT', /.*users\/1$/, {name: 'Pippi', num: 25}).respond({});
                 const tModel = new TestModel({id: 1, name: 'Pippi', num: 25});
                 tModel.save();
-                expect(updateMethod).to.have.been.calledOnce;
-                expect(updateMethod).to.have.been.calledWith('/users/1', {name: 'Pippi', num: 25});
+                httpBackend.flush();
             });
 
             it('returns promise that resolves to model', (done) => {
@@ -216,11 +204,10 @@ describe('abstract.model', () => {
         describe('destroy', () => {
 
             it('should trigger DELETE request', () => {
-                const destroyMethod = sinon.spy(httpService, 'delete');
+                httpBackend.expect('DELETE', /.*\/users\/99$/).respond({});
                 const tModel = new TestModel({id: 99});
                 tModel.destroy();
-                expect(destroyMethod).to.have.been.calledOnce;
-                expect(destroyMethod).to.have.been.calledWith('/users/99');
+                httpBackend.flush();
             });
 
         });
@@ -228,10 +215,9 @@ describe('abstract.model', () => {
         describe('find', () => {
 
             it('should trigger corresponding GET request', () => {
-                const readMethod = sinon.spy(httpService, 'get');
+                httpBackend.expect('GET', /.*\/users\/1$/).respond({});
                 TestModel.api.find(1);
-                expect(readMethod).to.have.been.calledOnce;
-                expect(readMethod).to.have.been.calledWith('/users/1');
+                httpBackend.flush();
             });
 
             it('should deliver a model with correct type', (done) => {
@@ -259,10 +245,9 @@ describe('abstract.model', () => {
         describe('findAll', () => {
 
             it('should trigger corresponding GET request', () => {
-                const readMethod = sinon.spy(httpService, 'get');
+                httpBackend.expect('GET', /.*\/users$/).respond({});
                 TestModel.api.findAll();
-                expect(readMethod).to.have.been.calledOnce;
-                expect(readMethod).to.have.been.calledWith('/users');
+                httpBackend.flush();
             });
 
             it('should return a promise that resolves to an array of models', (done) => {
@@ -302,22 +287,29 @@ describe('abstract.model', () => {
         interface IRelationModel extends IAbstractModel<IRelationModelAttributes> {}
 
         class RelationModel extends AbstractModel<IRelationModelAttributes, IRelationModel> {
-            public rootUrl: string = 'posts';
+            public getVersion(): string {
+                return 'post.v1';
+            }
+            public getRootUrl (): string {
+                return 'posts';
+            }
             protected fillAbles (): IModelFillAbles {
                 return {
                     id: IModelFillAblesTypes.STRING,
                     text: IModelFillAblesTypes.STRING
                 };
             }
+            protected fillAblesCU(): IModelFillAbles {
+                return this.fillAbles();
+            }
         }
 
         describe('allRelation', () => {
 
             it('should trigger corresponding GET request', () => {
-                const readMethod = sinon.spy(httpService, 'get');
+                httpBackend.expect('GET', /.*\/users\/12\/posts$/).respond({});
                 TestModel.api.allRelation(12, RelationModel);
-                expect(readMethod).to.have.been.calledOnce;
-                expect(readMethod).to.have.been.calledWith('/users/12/posts');
+                httpBackend.flush();
             });
 
             it('should return promise that resolves to relation models', (done) => {
@@ -332,10 +324,9 @@ describe('abstract.model', () => {
             });
 
             it('parent=true: should trigger corresponding GET request', () => {
-                const readMethod = sinon.spy(httpService, 'get');
+                httpBackend.expect('GET', /.*\/posts\/12\/users$/).respond({});
                 TestModel.api.allRelation(12, RelationModel, true);
-                expect(readMethod).to.have.been.calledOnce;
-                expect(readMethod).to.have.been.calledWith('/posts/12/users');
+                httpBackend.flush();
             });
 
             it('parent=true: should return promise that resolves to models', (done) => {
@@ -354,10 +345,9 @@ describe('abstract.model', () => {
         describe('findRelation', () => {
 
             it('should trigger corresponding GET request', () => {
-                const readMethod = sinon.spy(httpService, 'get');
+                httpBackend.expect('GET', /.*\/users\/12\/posts\/66$/).respond([]);
                 TestModel.api.findRelation(12, RelationModel, 66);
-                expect(readMethod).to.have.been.calledOnce;
-                expect(readMethod).to.have.been.calledWith('/users/12/posts/66');
+                httpBackend.flush();
             });
 
             it('should return promise that resolves to relation model', (done) => {
@@ -371,10 +361,9 @@ describe('abstract.model', () => {
             });
 
             it('parent=true: should trigger corresponding GET request', () => {
-                const readMethod = sinon.spy(httpService, 'get');
+                httpBackend.expect('GET', /.*\/posts\/66\/users\/12$/).respond([]);
                 TestModel.api.findRelation(12, RelationModel, 66, true);
-                expect(readMethod).to.have.been.calledOnce;
-                expect(readMethod).to.have.been.calledWith('/posts/66/users/12');
+                httpBackend.flush();
             });
 
             it('parent=true: should return promise that resolves to model', (done) => {
@@ -393,6 +382,10 @@ describe('abstract.model', () => {
 
     describe('conversion', () => {
 
+        interface ISecondComplexModelAttrs {
+            id: string;
+            name: string;
+        }
         interface IComplexModelAttrs {
             name: string;
             config: {
@@ -403,10 +396,17 @@ describe('abstract.model', () => {
             active: boolean;
             floatNum: number;
             date: moment.Moment;
+            entityId: number;
+            entity: ISecondComplexModelAttrs;
         }
         interface IComplexModel extends IAbstractModel<IComplexModelAttrs> {};
         class ComplexModel extends AbstractModel<IComplexModelAttrs, IComplexModel> {
-            public rootUrl = 'complex';
+            public getVersion(): string {
+                return 'complex.v1';
+            }
+            public getRootUrl (): string {
+                return 'complex';
+            }
             public static api = new ComplexModel();
             protected fillAbles(): IModelFillAbles {
                 return {
@@ -416,7 +416,21 @@ describe('abstract.model', () => {
                     num: IModelFillAblesTypes.NUMBER,
                     active: IModelFillAblesTypes.BOOL,
                     floatNum: IModelFillAblesTypes.FLOAT,
-                    date: IModelFillAblesTypes.DATE
+                    date: IModelFillAblesTypes.DATE,
+                    entityId: (complexModel: IComplexModelAttrs): string => complexModel.entity && complexModel.entity.id,
+                    entity: IModelFillAblesTypes.OBJECT
+                };
+            }
+            protected fillAblesCU(): IModelFillAbles {
+                return {
+                    name: IModelFillAblesTypes.STRING,
+                    config: IModelFillAblesTypes.OBJECT,
+                    languages: IModelFillAblesTypes.ARRAY,
+                    num: IModelFillAblesTypes.NUMBER,
+                    active: IModelFillAblesTypes.BOOL,
+                    floatNum: IModelFillAblesTypes.FLOAT,
+                    date: IModelFillAblesTypes.DATE,
+                    entityId: IModelFillAblesTypes.NUMBER
                 };
             }
         }
@@ -604,6 +618,21 @@ describe('abstract.model', () => {
                 });
             });
 
+            describe('Function Callback', () => {
+
+                const complexData = {
+                    entity: {
+                        id: 123,
+                        name: 'sencond entity'
+                    }
+                };
+                it('should support callback for relation entities', () => {
+                    const model = new ComplexModel(complexData);
+                    expect(model.attributes.entityId).to.be.a('number');
+                    expect(model.attributes).to.have.property('entityId', 123);
+                });
+            });
+
         });
 
         describe('to http', () => {
@@ -638,7 +667,7 @@ describe('abstract.model', () => {
         describe('nested types', () => {
 
             interface IDeepModelAttributes {
-                id: number;
+                id: string;
                 name: string;
                 level1: {
                     someBool: boolean;
@@ -653,8 +682,13 @@ describe('abstract.model', () => {
             interface IDeepModel extends IAbstractModel<IDeepModelAttributes> {}
 
             class DeepModel extends AbstractModel<IDeepModelAttributes, IDeepModel> {
+                public getVersion(): string {
+                    return 'user.v1';
+                }
+                public getRootUrl (): string {
+                    return 'users';
+                }
                 public static api = new DeepModel();
-                public rootUrl = 'users';
                 protected fillAbles(): IModelFillAbles {
                     return {
                         id: IModelFillAblesTypes.NUMBER,
@@ -668,6 +702,9 @@ describe('abstract.model', () => {
                             }
                         }
                     };
+                }
+                protected fillAblesCU(): IModelFillAbles {
+                    return this.fillAbles();
                 }
             }
 

@@ -6,17 +6,20 @@
     "experimentalDecorators": true,
     "sourceMap": true
   },
+  "awesomeTypescriptLoaderOptions": {
+    "library": "es5",
+    "resolveGlobs": true,
+    "forkChecker": true
+  },
   "exclude": [
-    "node_modules",
-    "typings/main.d.ts",
-    "typings/main"
+    "node_modules"
   ],
   "filesGlob": [
     "./src/**/*.ts",
     "./test/**/*.ts",
     "!./node_modules/**/*.ts",
     "typings-custom/module.d.ts",
-    "typings/browser.d.ts"
+    "typings/index.d.ts"
   ],
   "compileOnSave": false,
   "buildOnSave": false,

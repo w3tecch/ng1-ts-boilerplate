@@ -5,8 +5,11 @@
  */
 class HomeRoute implements ng.IComponentOptions {
   public template = require('./home.view.html');
-
   constructor(public controller) {}
 }
 
-export default HomeRoute;
+import Controller from './home.controller.ts';
+export const asset = `module${module.id}.route`;
+export default angular.module(module.id.toString(), [])
+  .component(asset, new HomeRoute(Controller))
+  .name;

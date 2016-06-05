@@ -1,15 +1,17 @@
 'use strict';
 
-var webpack = require('webpack');
-var autoprefixer = require('autoprefixer');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var precss = require('precss');
-var yargs = require('yargs').argv;
-var path = require('path');
+const webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const precss = require('precss');
+const yargs = require('yargs').argv;
+const path = require('path');
+const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
+const CompressionPlugin = require('compression-webpack-plugin');
 
-var helpers = require(process.cwd() + '/webpack.helpers.js');
-var appConfig = require(process.cwd() + '/app.config.js')(helpers.getEnv(), helpers.getPkg());
+const helpers = require(process.cwd() + '/webpack.helpers.js');
+const appConfig = require(process.cwd() + '/app.config.js')(helpers.getEnv(), helpers.getPkg());
 
 module.exports = function makeWebpackConfig(options) {
   /**
@@ -17,15 +19,15 @@ module.exports = function makeWebpackConfig(options) {
    * BUILD is for generating minified builds
    * TEST is for generating test builds
    */
-  var BUILD = !!options.BUILD;
-  var TEST = !!options.TEST;
+  const BUILD = !!options.BUILD;
+  const TEST = !!options.TEST;
 
   /**
    * Config
    * Reference: http://webpack.github.io/docs/configuration.html
    * This is the object where all configuration gets set
    */
-  var config = {};
+  const config = {};
 
   /**
    * Entry
@@ -53,24 +55,9 @@ module.exports = function makeWebpackConfig(options) {
     config.output = {
       path: helpers.root('dist'),
       filename: BUILD ? '[name].[hash].js' : '[name].bundle.js',
-      sourceMapFilename: 'bundle.map'
+      sourceMapFilename: 'bundle.map',
+      publicPath: BUILD ? '/' : 'http://' + helpers.getMetadata().host + ':' + helpers.getMetadata().port + '/'
     };
-    //config.output = {
-    //  // Absolute output directory
-    //  path: __dirname + '/public',
-    //
-    //  // Output path from the view of the page
-    //  // Uses webpack-dev-server in development
-    //  publicPath: BUILD ? '/' : 'http://localhost:8080/',
-    //
-    //  // Filename for entry points
-    //  // Only adds hash in build mode
-    //  filename: BUILD ? '[name].[hash].js' : '[name].bundle.js',
-    //
-    //  // Filename for non-entry points
-    //  // Only adds hash in build mode
-    //  chunkFilename: BUILD ? '[name].[hash].js' : '[name].bundle.js'
-    //}
   }
 
   /**
@@ -85,8 +72,29 @@ module.exports = function makeWebpackConfig(options) {
     config.devtool = 'source-map';
   } else {
     config.debug = true;
-    config.devtool = 'eval';
+    config.devtool = 'inline-source-map';
   }
+
+  /**
+   * Resolve extensions
+   * Reference: http://webpack.github.io/docs/configuration.html#module-loaders
+   * List: http://webpack.github.io/docs/list-of-loaders.html
+   * This handles most of the magic responsible for converting modules
+   */
+  config.resolve = {
+    /*
+     * An array of extensions that should be used to resolve modules.
+     *
+     * See: http://webpack.github.io/docs/configuration.html#resolve-extensions
+     */
+    extensions: ['', '.ts', '.js'],
+
+    // Make sure root is src
+    root: '.src',
+
+    // remove other default values
+    modulesDirectories: ['node_modules'],
+  };
 
   /**
    * Loaders
@@ -130,6 +138,10 @@ module.exports = function makeWebpackConfig(options) {
       {
         test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
         loader: 'url-loader?limit=20000'
+      },
+      {
+        test: require.resolve("jquery"),
+        loader: 'expose?$!expose?jQuery'
       }
     ]
   };
@@ -142,14 +154,14 @@ module.exports = function makeWebpackConfig(options) {
     config.module.loaders.push(
       {
         test: /\.ts$/,
-        loader: 'ts-loader'
+        loader: 'awesome-typescript-loader'
       }
     );
   } else {
     config.module.loaders.push(
       {
         test: /\.ts$/,
-        loader: 'ts-loader',
+        loader: 'awesome-typescript-loader',
         exclude: [/\.(spec|e2e|async)\.ts$/]
       }
     );
@@ -230,6 +242,7 @@ module.exports = function makeWebpackConfig(options) {
   // It also updates stylesheets and inline assets without page reloading.
   if (!TEST && !BUILD) {
     config.plugins.push(new webpack.HotModuleReplacementPlugin());
+    config.plugins.push(new ForkCheckerPlugin());
   }
 
   // Add build specific plugins
@@ -253,6 +266,18 @@ module.exports = function makeWebpackConfig(options) {
           // angular global variable, so we should keep it unchanged
           except: ['$super', '$', 'exports', 'require', 'angular']
         }
+      }),
+
+      /**
+       * Plugin: CompressionPlugin
+       * Description: Prepares compressed versions of assets to serve
+       * them with Content-Encoding
+       *
+       * See: https://github.com/webpack/compression-webpack-plugin
+       */
+      new CompressionPlugin({
+        regExp: /\.css$|\.html$|\.js$|\.map$/,
+        threshold: 2 * 1024
       })
     )
   }

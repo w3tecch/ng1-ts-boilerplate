@@ -11,7 +11,7 @@ import { IHttpUtilService } from './../common/services/utils/http.service.ts';
  * @interface IModelFillAbles
  */
 export interface IModelFillAbles {
-  [key: string]: IModelFillAblesTypes | IModelFillAbles;
+  [key: string]: IModelFillAblesTypes | IModelFillAbles | Function;
 }
 
 /**
@@ -28,7 +28,8 @@ export enum IModelFillAblesTypes {
   DATE,
   TIME,
   OBJECT,
-  ARRAY
+  ARRAY,
+  FORM_DATA
 }
 
 export type IModelIdentifier = string | number;
@@ -42,7 +43,7 @@ export type IModelAttributes = Object;
  * @interface IAbstractModel
  */
 export interface IAbstractModel<K> {
-  rootUrl: string;
+  getRootUrl(): string;
   attributes: K;
   isNew(): boolean;
   save<T>(): ng.IPromise<T>;
@@ -75,14 +76,6 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
   public static httpService: IHttpUtilService;
 
   /**
-   * The model root url
-   * empty for abstract class
-   *
-   * @type {string}
-   */
-  public rootUrl: string;
-
-  /**
    * This hold the attributes you are action on
    *
    * @type {IModelAttributes}
@@ -107,31 +100,14 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
   protected httpDateFormat: string = 'YYYY-MM-DD HH:mm:ss';
 
   /**
-   * Should we send the identifier within the payload
-   *
-   * @protected
-   * @type {boolean}
-   */
-  protected httpSendIdentifier: boolean = false;
-
-  /**
-   * Which data should we not send to the backend
-   *
-   * @protected
-   * @type {string[]}
-   */
-  protected httpNotSendData: string[] = [
-    'createdAt',
-    'updatedAt'
-  ];
-
-  /**
    * This holds you attributes from the backend
    *
    * @protected
    * @type {IModelAttributes}
    */
   protected original: K = <K>{};
+
+  protected headers: Object;
 
   /**
    * Constructor
@@ -140,7 +116,23 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    */
   constructor(attrs?: Object) {
     if (attrs) { this.fill(attrs); } else { this.fillEmpty(); }
+    const headerValue = `application/vnd.scp.${this.getVersion()}+json`;
+    this.headers = {
+      'Accept': headerValue,
+      'Content-Type': headerValue
+    };
   }
+
+  /**
+   * The model root url, will be used to construct API-URL.
+   * @returns root url, e.g. 'users' for api calls against <BASE-URL>/users
+   */
+  public abstract getRootUrl(): string;
+
+  /**
+   * @returns The version used in the Accept and Content-Type headers.
+   */
+  public abstract getVersion(): string;
 
   /**
    * Tells if the model is new
@@ -209,8 +201,8 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    *
    * @returns {ng.IPromise<void>}
    */
-  public destroy(): ng.IPromise<void> {
-    return this.delete(this.original[this.identifier]);
+  public destroy(identifier?: IModelIdentifier): ng.IPromise<void> {
+    return this.delete((identifier || this.original[this.identifier]));
   }
 
   /**
@@ -252,7 +244,9 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    * @returns {ng.IPromise<IAbstractModel>}
    */
   protected get(id: IModelIdentifier): ng.IPromise<J> {
-    return AbstractModel.httpService.get(`/${this.rootUrl}/${id}`).then(r => <J>this.newModel(r));
+    return AbstractModel.httpService
+        .read({url: `/${this.getRootUrl()}/${id}`, headers: this.headers})
+        .then(r => <J>this.newModel(r));
   }
 
   /**
@@ -262,7 +256,8 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    * @returns {ng.IPromise<IAbstractModel[]>}
    */
   protected getAll(): ng.IPromise<J[]> {
-    return AbstractModel.httpService.get(`/${this.rootUrl}`).then(r => <J[]>this.newModel(r));
+    return AbstractModel.httpService
+        .read({url: `/${this.getRootUrl()}`, headers: this.headers}).then(r => <J[]>this.newModel(r));
   }
 
   /**
@@ -282,11 +277,19 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
   ): ng.IPromise<IAbstractModel<any>> {
     let relationModel = new relation();
     if (parent) {
-      return AbstractModel.httpService.get(`/${relationModel.rootUrl}/${foreignId}/${this.rootUrl}/${localId}`)
-        .then(r => <J>this.newModel(r));
+      return AbstractModel.httpService
+          .read({
+            url: `/${relationModel.getRootUrl()}/${foreignId}/${this.getRootUrl()}/${localId}`,
+            headers: this.headers
+          })
+          .then(r => <IAbstractModel<any>>this.newModel(r));
     } else {
-      return AbstractModel.httpService.get(`/${this.rootUrl}/${localId}/${relationModel.rootUrl}/${foreignId}`)
-        .then(r => <J>this.newModel(r, relation));
+      return AbstractModel.httpService
+          .read({
+            url: `/${this.getRootUrl()}/${localId}/${relationModel.getRootUrl()}/${foreignId}`,
+            headers: this.headers
+          })
+          .then(r => <IAbstractModel<any>>this.newModel(r, relation));
     }
   }
 
@@ -305,10 +308,19 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
   ): ng.IPromise<IAbstractModel<any>[]> {
     let relationModel = new relation();
     if (parent) {
-      return AbstractModel.httpService.get(`/${relationModel.rootUrl}/${localId}/${this.rootUrl}`).then(r => <J[]>this.newModel(r));
+      return AbstractModel.httpService
+          .read({
+            url: `/${relationModel.getRootUrl()}/${localId}/${this.getRootUrl()}`,
+            headers: this.headers
+          })
+          .then(r => <IAbstractModel<any>[]>this.newModel(r));
     } else {
-      return AbstractModel.httpService.get(`/${this.rootUrl}/${localId}/${relationModel.rootUrl}`)
-        .then(r => <J[]>this.newModel(r, relation));
+      return AbstractModel.httpService
+          .read({
+            url: `/${this.getRootUrl()}/${localId}/${relationModel.getRootUrl()}`,
+            headers: this.headers
+          })
+          .then(r => <IAbstractModel<any>[]>this.newModel(r, relation));
     }
   }
 
@@ -320,7 +332,7 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    * @returns {(ng.IPromise<IAbstractModel | IAbstractModel[]>)}
    */
   protected customGet(url: string): ng.IPromise<J | J[]> {
-    return AbstractModel.httpService.get(url).then(r => <J | J[]>this.newModel(r));
+    return AbstractModel.httpService.read({url: url, headers: this.headers}).then(r => <J | J[]>this.newModel(r));
   }
 
   /**
@@ -337,7 +349,8 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    */
   protected customRequestCall(method: string, url: string, params, data, headers, skipAuth: boolean)
   : ng.IPromise<J | J[] | void> {
-    return AbstractModel.httpService.custom(method, url, params, data, headers, skipAuth);
+    return AbstractModel.httpService
+        .custom({url: url, params: params, headers: headers, skipAuthorization: skipAuth}, method, data);
   }
 
   /**
@@ -348,7 +361,12 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    * @returns {ng.IPromise<IAbstractModel>}
    */
   protected create(data: K): ng.IPromise<J> {
-    return AbstractModel.httpService.post(`/${this.rootUrl}`, data).then(r => <J>this.newModel(r));
+    return AbstractModel.httpService
+        .create({
+          url: `/${this.getRootUrl()}`,
+          headers: this.headers
+        }, data)
+        .then(r => <J>this.newModel(r));
   }
 
   /**
@@ -359,7 +377,12 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    * @returns {ng.IPromise<IAbstractModel>}
    */
   protected update(data: K): ng.IPromise<J> {
-    return AbstractModel.httpService.put(`/${this.rootUrl}/${this.getId()}`, data).then(r => <J>this.newModel(r));
+    return AbstractModel.httpService
+        .update({
+          url: `/${this.getRootUrl()}/${this.getId()}`,
+          headers: this.headers
+        }, data)
+        .then(r => <J>this.newModel(r));
   }
 
   /**
@@ -370,7 +393,12 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    * @returns {ng.IPromise<void>}
    */
   protected delete(id: IModelIdentifier): ng.IPromise<void> {
-    return AbstractModel.httpService.delete(`/${this.rootUrl}/${id}`).then(r => void 0);
+    return AbstractModel.httpService
+        .destroy({
+          url: `/${this.getRootUrl()}/${id}`,
+          headers: this.headers
+        })
+        .then(r => void 0);
   }
 
   /**
@@ -383,6 +411,15 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
   protected abstract fillAbles(): IModelFillAbles;
 
   /**
+   * You have to define fillAblesCU, these are your create/update attributes
+   *
+   * @protected
+   * @abstract
+   * @returns {IModelFillAbles}
+   */
+  protected abstract fillAblesCU(): IModelFillAbles;
+
+  /**
    * Converts attributes to HTTP data
    *
    * @private
@@ -390,13 +427,7 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    * @returns {IModelAttributes}
    */
   private convertToHttpData(attrs: K): K {
-    let tempHttpData = this.fillDeep(attrs, this.fillAbles(), true);
-
-    if (!this.httpSendIdentifier) {
-      delete tempHttpData[this.identifier];
-    }
-    this.httpNotSendData.forEach(i => delete tempHttpData[i]);
-    return <K>tempHttpData;
+    return <K>this.fillDeep(attrs, this.fillAblesCU(), true);
   };
 
   /**
@@ -432,10 +463,12 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
     const fillAblesKeys = Object.keys(fillAbles);
     let obj = {};
     fillAblesKeys.forEach(key => {
-      if (angular.isDefined(attrs[key])) {
+      if (this.isDefined(attrs[key])) {
         obj[key] = typeof fillAbles[key] === 'object'
             ? this.fillDeep(attrs[key], <IModelFillAbles>fillAbles[key], toHttp)
             : convert(attrs[key], fillAbles[key]);
+      } else if (this.isFunction(fillAbles[key])) {
+        obj[key] = convert(attrs, fillAbles[key]);
       }
     });
     return obj;
@@ -478,7 +511,7 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
    * @param {IModelFillAblesTypes} type
    * @returns {T}
    */
-  private convertToType(value: any, type: IModelFillAblesTypes | Object): any {
+  private convertToType(value: any, type: IModelFillAblesTypes | Object | Function): any {
     let returnValue;
 
     /* tslint:disable:no-null-keyword */
@@ -486,6 +519,11 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
       return undefined;
     }
     /* tslint:enable:no-null-keyword */
+    if (this.isFunction(type)) {
+      /* tslint:disable:no-eval */
+      return eval('type(value)');
+      /* tslint:enable:no-eval */
+    }
 
     switch (type) {
       case IModelFillAblesTypes.NUMBER:
@@ -556,6 +594,14 @@ abstract class AbstractModel<K extends IModelAttributes, J extends IAbstractMode
 
     return returnValue;
   };
+
+  private isFunction(fn: any): boolean {
+    return (typeof fn === 'function');
+  }
+
+  private isDefined(a: any): boolean {
+    return (typeof a !== 'undefined');
+  }
 
 }
 

@@ -15,31 +15,55 @@ export interface IUserModelAttributes {
 export interface IUserModel extends IAbstractModel<IUserModelAttributes> {}
 
 /**
- * The Task model class
+ * The user model
  *
- * @class TaskModel
- * @extends {AbstractModel}
- * @implements {ITaskModel}
+ * @class UserModel
+ * @extends {AbstractModel<IUserModelAttributes, IUserModel>}
+ * @implements {IUserModel}
  */
 class UserModel extends AbstractModel<IUserModelAttributes, IUserModel> implements IUserModel {
 
   public static api = new UserModel();
 
-  /* tslint:disable:no-unused-variable */
   /**
    * The base url for this model
    *
    * @private
    * @static
    */
-  public rootUrl = 'users';
-  /* tslint:enable:no-unused-variable */
+  public static rootUrl = 'users';
+
+  /**
+   * The version header fot this model
+   *
+   * @private
+   * @static
+   */
+  private static version = 'user.v1';
+
+  /**
+   * Provide the base url to the abstract model
+   *
+   * @returns {string}
+   */
+  public getRootUrl(): string {
+    return UserModel.rootUrl;
+  }
+
+  /**
+   * Provide the version to the abstract model
+   *
+   * @returns {string}
+   */
+  public getVersion(): string {
+    return UserModel.version;
+  }
 
   /**
    * The available attributes for this model
    *
    * @protected
-   * @returns {IModelFillAbles} (description)
+   * @returns {IModelFillAbles}
    */
   protected fillAbles(): IModelFillAbles {
     return {
@@ -50,6 +74,16 @@ class UserModel extends AbstractModel<IUserModelAttributes, IUserModel> implemen
       phone: IModelFillAblesTypes.STRING
     };
   };
+
+  /**
+   * The attributes which will be sent with POST/PUT
+   *
+   * @protected
+   * @returns {IModelFillAbles}
+   */
+  protected fillAblesCU(): IModelFillAbles {
+    return this.fillAbles();
+  }
 }
 
 export default UserModel;
