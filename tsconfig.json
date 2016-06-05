@@ -6,6 +6,11 @@
     "experimentalDecorators": true,
     "sourceMap": true
   },
+  "awesomeTypescriptLoaderOptions": {
+    "library": "es5",
+    "resolveGlobs": true,
+    "forkChecker": true
+  },
   "exclude": [
     "node_modules"
   ],

@@ -15,7 +15,6 @@ class LayoutRoute implements ng.IComponentOptions {
   ];
 }
 
-export const asset = `module${module.id}.route`;
 export default angular.module(module.id.toString(), [])
-  .component(asset, new LayoutRoute())
+  .component('layout', new LayoutRoute())
   .name;
