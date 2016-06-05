@@ -1,5 +1,5 @@
 {
-  "name": "ngOneTsWebpack",
+  "name": "ng1-ts-boilerplate",
   "private": false,
   "version": "0.0.0",
   "description": "A starter project for AngularJS",
@@ -15,7 +15,10 @@
     "build:dev": "./node_modules/.bin/webpack --config webpack.build.js --progress --profile --colors --display-error-details --display-cached --env",
     "build:prod": "./node_modules/.bin/webpack --config webpack.build.js --progress --profile --colors --display-error-details --display-cached --env prod",
     "test": "./node_modules/.bin/karma start",
-    "test:live": "./node_modules/.bin/karma start --auto-watch --no-single-run"
+    "test:live": "./node_modules/.bin/karma start --auto-watch --no-single-run",
+    "webdriver": "./node_modules/protractor/bin/webdriver-manager update",
+    "e2e": "./node_modules/.bin/protractor",
+    "e2e:live": "npm run e2e -- --elementExplorer"
   },
   "dependencies": {
     "@angular/router": "^0.2.0",
