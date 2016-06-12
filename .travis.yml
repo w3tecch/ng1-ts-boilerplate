@@ -7,5 +7,8 @@ before_script:
   - npm install -g typescript
   - npm install -g typings
   - typings install
+script:
+  - npm test
+  - npm run build
 notifications:
   email: false
