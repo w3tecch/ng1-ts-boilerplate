@@ -3,28 +3,54 @@
 [![devDependency Status](https://david-dm.org/w3tecch/ng1-ts-boilerplate/dev-status.svg)](https://david-dm.org/w3tecch/ng1-ts-boilerplate#info=devDependencies)
 [![StackShare](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](http://stackshare.io/dweber019/angular1-with-typescript-and-webpack)
 
-#ngOneTsWebpack
+# Getting Started
 
-**AngularJS 1.x + TypeScript + Karma + Webpack**
+## Prerequisites
+1. Install [Node.js](http://nodejs.org)
+	- on OSX use [homebrew](http://brew.sh) `brew install node`
+	- on Windows use [chocolatey](https://chocolatey.org/) `choco install nodejs`
 
-###Quick start
+2. Install these NPM packages globally
+  ```
+  npm install -g webpack typescript typings karma
+  ```
 
-#Table of Content
+## Dependencies
+1. Install all dependencies
+  ```
+  //In your project folder
+  npm install
+  typings install
+  ```
 
-#File Structure
+## Commands
 
-#Getting Started
+### Running the server
+```
+npm start
+```
 
-##Installing
+### Generate docs and start the docs server
+```
+npm run docs
+```
 
-##Run
+### Run test
+```
+npm test
+```
 
-##Test
+### Build the app
+```
+npm run build
+```
 
-##Other Commands
-
-#Usefull Libraries
--
+### Build the app
+You can pass configurations to the app like this:
+```
+npm start --env prod
+```
+This can be passed to `start` and `build` command.
 
 #Supporter
 <a href="https://www.browserstack.com"><img src="https://cdn.rawgit.com/w3tecch/ng1-ts-boilerplate/browserstack/supporters/browserStack.svg" height="75" /></a>
