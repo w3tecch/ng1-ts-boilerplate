@@ -53,7 +53,7 @@ npm start --env prod
 This can be passed to `start` and `build` command.
 
 #Supporter
-<a href="https://www.browserstack.com"><img src="https://cdn.rawgit.com/w3tecch/ng1-ts-boilerplate/browserstack/supporters/browserStack.svg" height="75" /></a>
+<a href="https://www.browserstack.com"><img src="https://github.com/w3tecch/ng1-ts-boilerplate/blob/develop/supporters/browserStack.svg" height="75" /></a>
 
 #License
 
